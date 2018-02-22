@@ -2,3 +2,5 @@
 
 groupmembers:
 Kevin Davis
+Cédric Van Broek
+Koen Teirlinck

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StretchAlyzer2</string>
+    <string name="ForgotPassw"> <u>Forgot Password?</u></string>
 </resources>

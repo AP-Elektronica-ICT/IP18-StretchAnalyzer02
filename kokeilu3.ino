@@ -13,9 +13,9 @@ const int analogInPin1 = A1;  // y
 const int analogInPin2 = A2;  // z
 
 
-int sensorValue0 = 0;        // x
-int sensorValue1 = 0;        // y
-int sensorValue2 = 0;        // z
+int sensorValue0 = 0;      // x
+int sensorValue1 = 0;      // y
+int sensorValue2 = 0;      // z
 
 
 double kiihtyvyys_x = 0;  //x-akselin kiihtyvyys m/s^2
@@ -26,26 +26,106 @@ unsigned long aika2 = 0;
 int x;
 int y;
 int z;
-double Maksimi = 0;
-double Minimi = 0;
-int tilaylos = 0;
+double yMinimi = 0;
+double yMaksimi = 0;
+double yMaksimi2 = 0;
+double aMinimi = 0;
+double aMaksimi = 0;
+double aMaksimi2 = 0;
+
+int tilaYlos = 0;
+int tilaAlas = 0;
+int ylajuttu = 0;
+int alajuttu = 0;
 
 
-
-double tila(){
+double tila()
+{
   
-  if(kiihtyvyys_y > 3){
-  tilaylos = 1;
-  Maksimi = kiihtyvyys_y;
-  return tilaylos, Maksimi;
+  if(kiihtyvyys_y > 3)
+  {
+  tilaYlos = 1;
+  return tilaYlos;
   }
   
-  if(kiihtyvyys_y < -2){
-  tilaylos = 0;
-  Minimi = kiihtyvyys_y;
-  return tilaylos, Minimi;
+  else
+  {
+    tilaYlos = 0;
+    return tilaYlos;
+  } 
+
+  if(yMaksimi > 9.81 && kiihtyvyys_y <= 5)
+  {
+  ylajuttu = 1 ;
+  return ylajuttu;
+  }
+
+  else
+  {
+    ylajuttu = 0;
+    return ylajuttu;
+  }
+
+  if(kiihtyvyys_y < -2)
+  {
+  tilaAlas = 1;
+  return tilaAlas;
+  }
+  else tilaAlas = 0;
+  
+
+  if(aMaksimi < -9.81 && kiihtyvyys_y >= -5)
+  {
+  alajuttu = 1 ;
+  return alajuttu;
+  }
+  else alajuttu = 0;
+  
+}
+
+double getYla()
+{
+  if(tilaYlos == 1 && kiihtyvyys_y >= yMaksimi)
+  {
+    yMaksimi = kiihtyvyys_y;
+    return yMaksimi;
+  }
+
+ else if (kiihtyvyys_y <= yMaksimi)
+ {
+  yMaksimi = yMaksimi;
+  return yMaksimi;
+ }
+
+  if(kiihtyvyys_y <= yMaksimi && ylajuttu == 1)
+  {
+    yMinimi = kiihtyvyys_y;
+    return yMinimi;
   }
 }
+
+
+void getAla()
+{
+  if(tilaAlas == 1 && kiihtyvyys_y <= aMaksimi)
+  {
+    aMaksimi = kiihtyvyys_y;
+    return aMaksimi;
+  }
+
+   else if (kiihtyvyys_y >= aMaksimi)
+ {
+  aMaksimi = aMaksimi;
+  return aMaksimi;
+ }
+
+  if(kiihtyvyys_y <= aMaksimi && alajuttu == 1)
+  {
+    aMinimi = kiihtyvyys_y;
+    return aMinimi;
+  }
+}
+
 
 
 
@@ -61,6 +141,13 @@ void setup(){
 }
 
 void loop(){
+ // edellMaksimi = Maksimi;
+ // edellMinimi = Minimi;
+
+getAla();
+getYla();
+tila();
+ 
    getGyroValues();
    // This will update x, y, and z with new values
 
@@ -80,7 +167,7 @@ kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
 kiihtyvyys_z = 0.1452 * sensorValue2 -49.32;
 kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
     
-tila();
+
 
 
 
@@ -92,17 +179,19 @@ tila();
   Serial.print("\t ");
   Serial.print(kiihtyvyys_z);
   Serial.print("\t ");
-  Serial.print(x);
+/*  Serial.print(x);
   Serial.print("\t");
   Serial.print(y);
   Serial.print("\t");
   Serial.print(z);
+  Serial.print(" \t "); */
+  Serial.print(yMaksimi);
   Serial.print(" \t ");
-  Serial.print(Maksimi);
+  Serial.print(yMinimi);
   Serial.print(" \t ");
-  Serial.print(Minimi);
+  Serial.print(aMaksimi);
   Serial.print(" \t ");
-  Serial.print(tilaylos);
+  Serial.print(aMinimi);
   Serial.println(" \t ");
 
 

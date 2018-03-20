@@ -31,17 +31,20 @@ double Minimi = 0;
 int tilaylos = 0;
 
 
-int tila(){
+
+double tila(){
   
-  if(kiihtyvyys_x > 0){
+  if(kiihtyvyys_y > 3){
   tilaylos = 1;
+  Maksimi = kiihtyvyys_y;
+  return tilaylos, Maksimi;
   }
   
-  if(kiihtyvyys_x < 0){
+  if(kiihtyvyys_y < -2){
   tilaylos = 0;
+  Minimi = kiihtyvyys_y;
+  return tilaylos, Minimi;
   }
-  
-return tilaylos;
 }
 
 
@@ -78,7 +81,8 @@ kiihtyvyys_z = 0.1452 * sensorValue2 -49.32;
 kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
     
 tila();
-//MinMax();
+
+
 
   Serial.print(aika);
   Serial.print("\t");

@@ -10,44 +10,127 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="8"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:weightSum="10">
 
-        <EditText
-            android:id="@+id/txtName"
+        //Header
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Name"
-            android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="43dp"
-            tools:layout_editor_absoluteY="96dp" />
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:text="Stretchalyzer"
+            android:textColor="#cf2b29"
+            android:textSize="18pt"
+            android:layout_weight="3"
+            android:paddingTop="15dp"/>
 
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textAutoCorrect|textPassword"
-            tools:layout_editor_absoluteX="43dp"
-            tools:layout_editor_absoluteY="165dp" />
 
-        <Button
-            android:id="@+id/btnLogin"
+        //Form
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickLogin"
-            android:text="Login"
-            tools:layout_editor_absoluteX="43dp"
-            tools:layout_editor_absoluteY="240dp" />
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="6">
 
-        <Button
-            android:id="@+id/btnRegister"
+            <EditText
+                android:id="@+id/txtName"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edittextborder"
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingStart="5pt"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="96dp"
+                android:layout_marginBottom="10dp"/>
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edittextborder"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textAutoCorrect|textPassword"
+                android:paddingStart="5pt"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="165dp"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edittextborder"
+                android:onClick="onClickLogin"
+                android:text="Login"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="240dp"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edittextborder"
+                android:text="Register"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="311dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/txtForgotPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="@string/ForgotPassw"
+                android:gravity="center"/>
+        </LinearLayout>
+
+
+
+        //Icons
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            tools:layout_editor_absoluteX="43dp"
-            tools:layout_editor_absoluteY="311dp" />
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Login with" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/ic_launcher" />
+        </LinearLayout>
 
     </LinearLayout>
 

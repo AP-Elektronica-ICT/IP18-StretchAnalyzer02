@@ -6,4 +6,168 @@
     android:layout_height="match_parent"
     tools:context="be.eaict.stretchalyzer2.HomeActivity">
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+
+        //Icons
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+
+            <Button
+                android:id="@+id/btnProfile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_toStartOf="@id/btnSettings"
+                android:background="@drawable/profile"
+                android:scaleType="fitCenter" />
+
+            <Button
+                android:id="@+id/btnSettings"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/settings"
+                android:scaleType="fitCenter" />
+        </RelativeLayout>
+
+        //Header
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="24"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Time until next exercise"
+                android:textColor="#000000"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtMinutes"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/textborder"
+                android:gravity="center"
+                android:text="10 minutes!"
+                android:textColor="#000000"
+                android:textSize="12pt"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/whitebuttonwborder"
+                android:text="START NOW!"
+                android:textColor="@color/colorPrimaryDark" />
+        </LinearLayout>
+
+        //Graph
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="34">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Today (24hr feed)"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
+        //Exercises
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="34">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/btnPrevEx"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:text="Previous &#10; Exercise"
+                        android:gravity="center"
+                        android:background="@drawable/whitebuttonwborder"/>
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        android:scaleType="fitXY" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/btnNextEx"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:text="Next &#10; Exercise"
+                        android:gravity="center"
+                        android:background="@drawable/whitebuttonwborder"/>
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        android:scaleType="fitXY"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

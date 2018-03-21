@@ -28,26 +28,55 @@ int y;
 int z;
 double Maksimi = 0;
 double Minimi = 0;
-int tilaylos = 0;
+double edellMaksimi = 0;
+double edellMinimi = 0;
+int tila = 0;
+int ylataso = 0;
+int alataso = 0;
 
-
-
-double tila(){
-  
-  if(kiihtyvyys_y > 3){
-  tilaylos = 1;
-  Maksimi = kiihtyvyys_y;
-  return tilaylos, Maksimi;
+int gettila(){
+  if(kiihtyvyys_y > 0.5){
+    tila = 1;
+          return tila;
+    }
+    else if(kiihtyvyys_y < 0.5){
+      tila = -1;
+            return tila;
+      }  
+    else{
+      tila = 0;
+            return tila;
+      }
   }
-  
-  if(kiihtyvyys_y < -2){
-  tilaylos = 0;
-  Minimi = kiihtyvyys_y;
-  return tilaylos, Minimi;
+
+
+int gettaso(){
+  if(tila == 1){
+     ylataso = 1;
+     return ylataso;
+  }
+ else if(tila == -1){
+  if (kiihtyvyys_y <= -5){
+  alataso = 1;
+  return alataso;
+  }
+  else{
+    ylataso = 0;
+    alataso = 0;
+  return alataso, ylataso;
   }
 }
+}
 
+double getMaksimi(){
+  Maksimi = kiihtyvyys_y;
+  return Maksimi;
+  }
 
+double getMinimi(){
+  Minimi = kiihtyvyys_y;
+  return Minimi;
+  }
 
 void setup(){
 
@@ -61,6 +90,9 @@ void setup(){
 }
 
 void loop(){
+  edellMaksimi = Maksimi;
+  edellMinimi = Minimi;
+  
    getGyroValues();
    // This will update x, y, and z with new values
 
@@ -80,7 +112,11 @@ kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
 kiihtyvyys_z = 0.1452 * sensorValue2 -49.32;
 kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
     
-tila();
+gettila();
+gettaso();
+
+if(ylataso == 1) getMaksimi();
+if(alataso == 1) getMinimi();
 
 
 
@@ -102,7 +138,9 @@ tila();
   Serial.print(" \t ");
   Serial.print(Minimi);
   Serial.print(" \t ");
-  Serial.print(tilaylos);
+  Serial.print(ylataso);
+  Serial.print(" \t ");
+  Serial.print(alataso);
   Serial.println(" \t ");
 
 

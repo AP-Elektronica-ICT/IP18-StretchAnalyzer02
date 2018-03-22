@@ -35,6 +35,8 @@ double edellpMaksimi = -8;
 double edellpMinimi = 8;
 double edellMaksimi = -99;
 double edellMinimi = 99;
+double pieninkulma = 0;
+double suurinkulma = 0;
 int tila = 0;
 int edelltila = 0;
 int edelltila2 = 0;
@@ -44,8 +46,8 @@ int alataso = 0;
 
 double ylamuuttuja = 0;
 double alamuuttuja = 0;
-double ylakulma = 0;
-double alakulma = 0;
+double ylakulma = -10;
+double alakulma = 10;
 
 
 int gettila(){ //tarkistaa tilan tai luo sen
@@ -64,7 +66,7 @@ int gettila(){ //tarkistaa tilan tai luo sen
   }
 
 
-double gettaso(){//jostain syystä ylhäällä kääntyy alatasoksi, eli ei ole suodatusta
+double gettaso(){     //onko alataso vai ylataso
   if(tila == 1){
      ylataso = 1;
      return ylataso;
@@ -127,12 +129,12 @@ void setup(){
 }
 
 void loop(){
-  edellkiiht = kiihtyvyys_y;
+  edellkiiht = kiihtyvyys_y; //edellisiä arvoja vertailua varten
   edelltila2 = edelltila;
   edelltila = tila;
 edellpMaksimi = pMaksimi;
 edellpMinimi = pMinimi;
-   getGyroValues();
+   getGyroValues(); //gyroarvot
    // This will update x, y, and z with new values
 
   sensorValue0 = analogRead(analogInPin0);
@@ -143,7 +145,7 @@ edellpMinimi = pMinimi;
 
       
    
- kiihtyvyys_x = 0.1464 * sensorValue0 -48.363;
+ kiihtyvyys_x = 0.1464 * sensorValue0 -48.363;        //kiihtyvyydet
   kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
   
   kiihtyvyys_y = 0.1443 * sensorValue1 -47.844;
@@ -153,57 +155,27 @@ edellpMinimi = pMinimi;
   kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
 
 
-if (edellkiiht > kiihtyvyys_y + 2 || edellkiiht < kiihtyvyys_y - 2){ 
+if (edellkiiht > kiihtyvyys_y + 2 || edellkiiht < kiihtyvyys_y - 2){ //tilan tarkistus
 gettila();
 }
 
-gettaso();
-
-
- if (edelltila == 1 && tila != 1){
-  if (edelltila2 == 1){
-    Serial.println ("");
-   Serial.print ("Maksimi: \t");
-   Serial.println (edellMaksimi);
-     Serial.print ("\t");  
-    Serial.print ("pMinimi: \t");
-   Serial.println (alakulma);
-    Maksimi = 0;
-      pMinimi = 99;
-   edellMaksimi = -99;
-   ylataso = 0;
-    }
-  
-  } 
-  
- if (edelltila == -1 && tila != -1){
-  if(edelltila2 == -1){
-    Serial.println ("");
-  Serial.print ("Minimi: \t");
-  Serial.println (edellMinimi);
-    Serial.print ("\t");
-    Serial.print ("pMaksimi: \t");
-   Serial.println (ylakulma);
-  
-  Minimi = 0;
-  pMaksimi = -99;
-  edellMinimi = 99;
-  alataso = 0;
-    }
-  }
-
+gettaso();        //ala- vai ylätaso
 
   if(ylataso == 1) {
   getMaksimi();
   vertailuyla();
-    if (edellMinimi > 8){
+    if (edellMinimi > 7){
           pMinimi = kiihtyvyys_y;
            if (edellpMinimi < pMinimi){ 
             edellpMinimi = pMinimi;
              ylamuuttuja = asin(max (-9.81, edellpMinimi)/9.81)/3.14*180;
-             ylakulma = 90 + ylamuuttuja;
-             Serial.println("ylakulma \t");
+             ylakulma = ylamuuttuja + 90;
+             Serial.print(aika);
+             Serial.print("\t ylakulma \t");
              Serial.println(ylakulma);
+             if (ylakulma > suurinkulma){
+             suurinkulma = ylakulma;
+           }
             //kulmayla();
            }
       } 
@@ -212,27 +184,70 @@ gettaso();
   if(alataso == 1) {
   getMinimi();
   vertailuala();
-  if (edellMinimi < -8){
+  if (edellMinimi < -7){
     pMaksimi = kiihtyvyys_y;
           if (edellpMaksimi < pMaksimi){ 
             edellpMaksimi = pMaksimi;
             alamuuttuja = asin(max (-9.81, edellpMaksimi)/9.81)/3.14*180;
-             alakulma = (90 - alamuuttuja)*(-1);
-            Serial.print("alakulma \t");
+             alakulma = (alamuuttuja)*(-1);       //ei toimi
+            Serial.print(aika);
+            Serial.print("\t alakulma \t");
             Serial.println(alakulma);
+               if (alakulma < pieninkulma){
+             pieninkulma = alakulma;
+           }
             //kulmaala();
           }
      }
   }
 
-  Serial.print(aika);
+ if (edelltila == 1 && tila != 1){ //jos edellinen tila oli 1 ja nykyinen ei ole tarkista sitä edellinen tila == suodatusta
+  if (edelltila2 == 1){
+    Serial.println ("");
+   Serial.print ("Maksimi: \t");
+   Serial.print (edellMaksimi);
+       Serial.print ("\t");
+       Serial.print ("kulma:");     //tulosta laskettu kulma
+           Serial.print ("\t");
+       Serial.print (suurinkulma);
+     Serial.println ("\t");
+    Maksimi = 0;              //arvojen nollaus
+      pMinimi = 99;
+   edellMaksimi = -99;
+   ylataso = 0;
+    }
+  
+  } 
+  
+ if (edelltila == -1 && tila != -1){ //jos edellinen tila oli -1 ja nykyinen ei ole tarkista sitä edellinen tila == suodatusta
+  if(edelltila2 == -1){
+    Serial.println ("");
+  Serial.print ("Minimi: \t");
+  Serial.print (edellMinimi);
+    Serial.print ("\t");
+       Serial.print ("kulma:"); //tulosta laskettu kulma
+           Serial.print ("\t");
+       Serial.print (pieninkulma);
+          Serial.println ("\t");
+  
+  Minimi = 0;           //arvojen nollaus
+  pMaksimi = -99;
+  edellMinimi = 99;
+  alataso = 0;
+    }
+  }
+
+
+
+
+  /*Serial.print(aika);
   Serial.print("\t");
   Serial.print(kiihtyvyys_x);
   Serial.print("\t");
   Serial.print(kiihtyvyys_y);
   Serial.print("\t ");
   Serial.print(kiihtyvyys_z);
-  /*Serial.print("\t ");
+  Serial.print("\t ");
   Serial.print(x);
   Serial.print("\t");
   Serial.print(y);
@@ -253,12 +268,12 @@ gettaso();
   Serial.print(" \t ");
   Serial.print(edellkiiht);
    Serial.print(" \t ");
-  Serial.print(tila);*/
+  Serial.print(tila);
   Serial.print(" \t ");
   Serial.print(ylakulma);
    Serial.print(" \t ");
   Serial.print(alakulma);
-  Serial.println(" \t ");
+  */Serial.println(" \t ");
 
   delay(50); //Just here to slow down the serial to make it more readable
 }
@@ -322,10 +337,6 @@ int readRegister(int deviceAddress, byte address){
     Wire.endTransmission();
 
     Wire.requestFrom(deviceAddress, 1); // read a byte
-
-    while(!Wire.available()) {
-        // waiting
-    }
 
     v = Wire.read();
     return v;

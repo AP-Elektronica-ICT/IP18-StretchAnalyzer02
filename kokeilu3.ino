@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <math.h>
 
 #define CTRL_REG1 0x20
 #define CTRL_REG2 0x21
@@ -28,19 +29,31 @@ int z;
 double edellkiiht = 0;
 double Maksimi = 0;
 double Minimi = 0;
+double pMaksimi = -8;
+double pMinimi = 8;
+double edellpMaksimi = -8;
+double edellpMinimi = 8;
 double edellMaksimi = -99;
 double edellMinimi = 99;
 int tila = 0;
 int edelltila = 0;
+int edelltila2 = 0;
 int ylataso = 0;
 int alataso = 0;
 
-int gettila(){
-  if(kiihtyvyys_y > edellkiiht + 1){
+
+double ylamuuttuja = 0;
+double alamuuttuja = 0;
+double ylakulma = 0;
+double alakulma = 0;
+
+
+int gettila(){ //tarkistaa tilan tai luo sen
+  if(kiihtyvyys_y > 1){
     tila = 1;
     return tila;
     }
-    else if(kiihtyvyys_y < edellkiiht - 1){
+    else if(kiihtyvyys_y <  -1){
       tila = -1;
       return tila;
       }  
@@ -80,15 +93,28 @@ double getMinimi(){
 double  vertailuyla(){
     if (Maksimi > edellMaksimi){
       edellMaksimi = Maksimi;
+      return edellMaksimi;
       }
     }
  
 double  vertailuala(){
      if (Minimi < edellMinimi){
       edellMinimi = Minimi;
+      return edellMinimi;
       }
     }
 
+/*void kulmayla(){
+  ylamuuttuja = edellpMinimi + 9.81;
+  ylakulma = asin(ylamuuttuja/9.81)/3.14*180;
+  
+  }
+
+void kulmaala(){
+  alamuuttuja = edellpMaksimi - 9.81;
+  alakulma = asin(alamuuttuja/9.81)/3.14*180;
+  }
+*/
 void setup(){
 
   Wire.begin();
@@ -102,7 +128,10 @@ void setup(){
 
 void loop(){
   edellkiiht = kiihtyvyys_y;
+  edelltila2 = edelltila;
   edelltila = tila;
+edellpMaksimi = pMaksimi;
+edellpMinimi = pMinimi;
    getGyroValues();
    // This will update x, y, and z with new values
 
@@ -132,32 +161,68 @@ gettaso();
 
 
  if (edelltila == 1 && tila != 1){
-   Serial.println ("");
+  if (edelltila2 == 1){
+    Serial.println ("");
    Serial.print ("Maksimi: \t");
    Serial.println (edellMaksimi);
-   Maksimi = 0;
+     Serial.print ("\t");  
+    Serial.print ("pMinimi: \t");
+   Serial.println (alakulma);
+    Maksimi = 0;
+      pMinimi = 99;
    edellMaksimi = -99;
    ylataso = 0;
+    }
+  
   } 
   
  if (edelltila == -1 && tila != -1){
-  Serial.println ("");
+  if(edelltila2 == -1){
+    Serial.println ("");
   Serial.print ("Minimi: \t");
   Serial.println (edellMinimi);
+    Serial.print ("\t");
+    Serial.print ("pMaksimi: \t");
+   Serial.println (ylakulma);
+  
   Minimi = 0;
+  pMaksimi = -99;
   edellMinimi = 99;
   alataso = 0;
+    }
   }
 
 
   if(ylataso == 1) {
   getMaksimi();
   vertailuyla();
+    if (edellMinimi > 8){
+          pMinimi = kiihtyvyys_y;
+           if (edellpMinimi < pMinimi){ 
+            edellpMinimi = pMinimi;
+             ylamuuttuja = asin(max (-9.81, edellpMinimi)/9.81)/3.14*180;
+             ylakulma = 90 + ylamuuttuja;
+             Serial.println("ylakulma \t");
+             Serial.println(ylakulma);
+            //kulmayla();
+           }
+      } 
   }
 
   if(alataso == 1) {
   getMinimi();
   vertailuala();
+  if (edellMinimi < -8){
+    pMaksimi = kiihtyvyys_y;
+          if (edellpMaksimi < pMaksimi){ 
+            edellpMaksimi = pMaksimi;
+            alamuuttuja = asin(max (-9.81, edellpMaksimi)/9.81)/3.14*180;
+             alakulma = (90 - alamuuttuja)*(-1);
+            Serial.print("alakulma \t");
+            Serial.println(alakulma);
+            //kulmaala();
+          }
+     }
   }
 
   Serial.print(aika);
@@ -173,7 +238,7 @@ gettaso();
   Serial.print(y);
   Serial.print("\t");
   Serial.print(z);
-  */Serial.print(" \t ");
+  Serial.print(" \t ");
   Serial.print(Maksimi);
   Serial.print(" \t ");
   Serial.print(Minimi);
@@ -188,9 +253,12 @@ gettaso();
   Serial.print(" \t ");
   Serial.print(edellkiiht);
    Serial.print(" \t ");
-  Serial.print(tila);
+  Serial.print(tila);*/
+  Serial.print(" \t ");
+  Serial.print(ylakulma);
+   Serial.print(" \t ");
+  Serial.print(alakulma);
   Serial.println(" \t ");
-
 
   delay(50); //Just here to slow down the serial to make it more readable
 }

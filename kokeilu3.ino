@@ -28,26 +28,53 @@ int y;
 int z;
 double Maksimi = 0;
 double Minimi = 0;
-int tilaylos = 0;
+double edellMaksimi = 0;
+double edellMinimi = 0;
+int tila = 0;
+int ylataso = 0;
+int alataso = 0;
 
-
-
-double tila(){
-  
+int gettila(){
   if(kiihtyvyys_y > 3){
-  tilaylos = 1;
-  Maksimi = kiihtyvyys_y;
-  return tilaylos, Maksimi;
+    tila = 1;
+    return tila;
+    }
+    else if(kiihtyvyys_y < -3){
+      tila = -1;
+      return tila;
+      }  
+    else{
+      tila = 0;
+      return tila;
+      }
   }
-  
-  if(kiihtyvyys_y < -2){
-  tilaylos = 0;
-  Minimi = kiihtyvyys_y;
-  return tilaylos, Minimi;
+
+
+int gettaso(){//jostain syystä ylhäällä kääntyy alatasoksi, eli ei ole suodatusta
+  if(tila == 1){
+     ylataso = 1;
+     return ylataso;
+  }
+ else if(tila == -1){
+  alataso = 1;
+  return alataso;
+ }
+  else{
+    ylataso = 0;
+    alataso = 0;
+  return alataso, ylataso;
   }
 }
 
+double getMaksimi(){
+  Maksimi = kiihtyvyys_y;
+  return Maksimi;
+  }
 
+double getMinimi(){
+  Minimi = kiihtyvyys_y;
+  return Minimi;
+  }
 
 void setup(){
 
@@ -61,6 +88,9 @@ void setup(){
 }
 
 void loop(){
+  edellMaksimi = Maksimi;
+  edellMinimi = Minimi;
+  
    getGyroValues();
    // This will update x, y, and z with new values
 
@@ -71,17 +101,21 @@ void loop(){
    aika2 = aika;
    aika = millis();
 
-kiihtyvyys_x = 0.1486 * sensorValue0 -49.79;
-kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
+   
+ kiihtyvyys_x = 0.1464 * sensorValue0 -48.363;
+  kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
   
-kiihtyvyys_y = 0.1464 * sensorValue1 -48.80;
-kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
+  kiihtyvyys_y = 0.1443 * sensorValue1 -47.844;
+  kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
   
-kiihtyvyys_z = 0.1452 * sensorValue2 -49.32;
-kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
-    
-tila();
+  kiihtyvyys_z = 0.1464 * sensorValue2 -49.681;
+  kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);
 
+gettila();
+gettaso();
+
+if(ylataso == 1) getMaksimi();
+if(alataso == 1) getMinimi();
 
 
   Serial.print(aika);
@@ -98,11 +132,17 @@ tila();
   Serial.print("\t");
   Serial.print(z);
   Serial.print(" \t ");
-  Serial.print(Maksimi);
+    Serial.print(Maksimi);
   Serial.print(" \t ");
   Serial.print(Minimi);
   Serial.print(" \t ");
-  Serial.print(tilaylos);
+    Serial.print(edellMaksimi);
+  Serial.print(" \t ");
+  Serial.print(edellMinimi);
+  Serial.print(" \t ");
+  Serial.print(ylataso);
+  Serial.print(" \t ");
+  Serial.print(alataso);
   Serial.println(" \t ");
 
 

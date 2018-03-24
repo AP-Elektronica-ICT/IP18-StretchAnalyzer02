@@ -1,5 +1,6 @@
 package be.eaict.stretchalyzer2.DOM;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +14,10 @@ public interface IRepository {
 
     List<User> getUsers(List<Integer> idList);
 
+    List<fxDatapoint> getFxDataPoints();
+
+    List<fxDatapoint> getFxDataPoints(Date datum);
+
     //endregion
 
     //region SETTERS
@@ -20,6 +25,10 @@ public interface IRepository {
     void createUser(User user);
     void updateUser(User user);
     void createOrUpdateUser(User user);
+
+    void createFxDataPoint(fxDatapoint fxdatapoint);
+    void updateFxDataPoint(fxDatapoint fxdataPoint);
+    void createOrUpdateFxDataPoint(fxDatapoint fxdataPoint);
 
     //endregion
 }

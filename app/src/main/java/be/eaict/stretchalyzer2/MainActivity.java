@@ -1,7 +1,6 @@
 package be.eaict.stretchalyzer2;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE,minuut);
                 calendar.set(Calendar.SECOND,1);
                 //intents (pendingintent nodig)
-                Intent intent = new Intent(getApplicationContext(),Notification_reciever.class);
+                Intent intent = new Intent(getApplicationContext(),NotificationReciever.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

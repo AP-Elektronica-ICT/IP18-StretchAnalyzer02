@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
  * Created by Cédric on 3/22/2018.
  */
 
-public class Notification_reciever extends BroadcastReceiver {
+public class NotificationReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

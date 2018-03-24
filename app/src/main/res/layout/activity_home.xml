@@ -86,21 +86,19 @@
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
-        //Graph
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="34">
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="Today (24hr feed)"
-                android:textColor="#000000" />
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+
         </RelativeLayout>
 
         //Exercises

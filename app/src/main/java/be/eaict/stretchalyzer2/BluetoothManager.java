@@ -6,7 +6,10 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+<<<<<<< HEAD
 import android.view.View;
+=======
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -16,17 +19,29 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+<<<<<<< HEAD
  * Created by Kevin-Laptop on 21/03/2018.
  */
 
 public class BluetoothManager {
     private static BluetoothManager btm = null;
 
+=======
+ * Created by Kevin on 16/03/2018.
+ */
+
+public class BluetoothManager {
+
+    private static BluetoothManager btm = null;
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
     private final String DEVICE_NAME="STUG_IV";
     private final UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
+<<<<<<< HEAD
     private OutputStream outputStream;
+=======
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
     private InputStream inputStream;
     boolean deviceConnected=false;
     Thread thread;
@@ -51,8 +66,13 @@ public class BluetoothManager {
             {
                 // setUiEnabled(true);
                 deviceConnected=true;
+<<<<<<< HEAD
                 beginListenForData();
                 //txtBluetooth.append("\nConnection Opened!\n");
+=======
+                //beginListenForData();
+                //textView.append("\nConnection Opened!\n");
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
             }
         }
     }
@@ -113,11 +133,14 @@ public class BluetoothManager {
         if(connected)
         {
             try {
+<<<<<<< HEAD
                 outputStream=socket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
+=======
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
                 inputStream=socket.getInputStream();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -130,10 +153,19 @@ public class BluetoothManager {
         return connected;
     }
 
+<<<<<<< HEAD
     void beginListenForData() {
         final Handler handler = new Handler();
         stopThread = false;
         buffer = new byte[1024];
+=======
+    void listenForData() {
+        final Handler handler = new Handler();
+        stopThread = false;
+        buffer = new byte[1024];
+        String output;
+
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
         Thread thread  = new Thread(new Runnable()
         {
             public void run()
@@ -145,16 +177,26 @@ public class BluetoothManager {
                         int byteCount = inputStream.available();
                         if(byteCount > 0)
                         {
+<<<<<<< HEAD
                             final byte[] rawBytes = new byte[byteCount];
+=======
+                            byte[] rawBytes = new byte[byteCount];
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
                             inputStream.read(rawBytes);
                             final String string=new String(rawBytes,"UTF-8");
                             handler.post(new Runnable() {
                                 public void run()
                                 {
+<<<<<<< HEAD
                                     buffer = rawBytes;
                                 }
                             });
 
+=======
+
+                                }
+                            });
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1
                         }
                     }
                     catch (IOException ex)
@@ -167,6 +209,7 @@ public class BluetoothManager {
 
         thread.start();
     }
+<<<<<<< HEAD
 
     public void onClickStop(View view) throws IOException {
         stopThread = true;
@@ -217,3 +260,6 @@ public class BluetoothManager {
         }
     }*/
 }
+=======
+}
+>>>>>>> dd462f3568771959f4bb4215673faec7311c33a1

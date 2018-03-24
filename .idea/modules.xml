@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IP18-StretchAnalyzer02.iml" filepath="$PROJECT_DIR$/IP18-StretchAnalyzer02.iml" />
-      <module fileurl="file://D:\AP\2EA\International Project\project\IP18-StretchAnalyzer02\IP18-StretchAnalyzer02.iml" filepath="D:\AP\2EA\International Project\project\IP18-StretchAnalyzer02\IP18-StretchAnalyzer02.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\AP\2EA\International Project\project\IP18-StretchAnalyzer02\app\app.iml" filepath="D:\AP\2EA\International Project\project\IP18-StretchAnalyzer02\app\app.iml" />
     </modules>
   </component>
 </project>

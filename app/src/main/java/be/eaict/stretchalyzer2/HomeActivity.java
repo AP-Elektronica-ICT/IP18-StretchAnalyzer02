@@ -81,16 +81,8 @@ public class HomeActivity extends AppCompatActivity {
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                Locale locale = new Locale("en", "IN"  );
-                if (status == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(locale);
-                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "This Language is not supported");
-                    }
+                createTts(status);
 
-                } else {
-                    Log.e("TTS", "Initilization Failed!");
-                }
             }
         });
 
@@ -103,6 +95,33 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+    //Text-to-Speech
+    private void createTts(int status) {
+        Locale locale = new Locale("en", "IN"  );
+        if (status == TextToSpeech.SUCCESS) {
+            int result = tts.setLanguage(locale);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            }
+
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+    }
+
+
+    private void speak(String text){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }else{
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+
+
+    //Graph creation
     public void createGraph(){
         //data uitlezen uit text files (graph)
         try {
@@ -144,14 +163,6 @@ public class HomeActivity extends AppCompatActivity {
         graph.addSeries(series);
     }
 
-    private void speak(String text){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }else{
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-        }
-    }
-
     @Override
     public void onDestroy() {
         if (tts != null) {
@@ -162,6 +173,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+
+    //Data checker
     Runnable mDataChecker = new Runnable() {
         @Override
         public void run() {

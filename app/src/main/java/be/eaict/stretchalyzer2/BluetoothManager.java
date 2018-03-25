@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +25,10 @@ import java.util.UUID;
 public class BluetoothManager {
 
     private static BluetoothManager btm = null;
-    private final String DEVICE_NAME="STUG_IV";
+    private final String DEVICE_NAME="STUG_IV"; //Aan te passen aan de instellingen van de bluetooth van de arduino.
     private final UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
-    private OutputStream outputStream;
     private InputStream inputStream;
     boolean deviceConnected=false;
     Thread thread;
@@ -37,7 +37,7 @@ public class BluetoothManager {
     boolean stopThread;
     Context currCtx;
 
-    public static BluetoothManager getInstance(Context ctx) {
+    public static BluetoothManager getInstance(Context ctx) { //Nieuwe instantie aanmaken
         if(btm == null) {
             btm = new BluetoothManager(ctx);
         }
@@ -45,42 +45,32 @@ public class BluetoothManager {
         return btm;
     }
 
-    public BluetoothManager(Context ctx) {
+    public BluetoothManager(Context ctx) { // Initaliseren en Connecteren
         currCtx = ctx;
         if(BTinit())
         {
             if(BTconnect())
             {
-                // setUiEnabled(true);
                 deviceConnected=true;
                 beginListenForData();
-                //txtBluetooth.append("\nConnection Opened!\n");
             }
         }
     }
 
     public boolean BTinit() {
         boolean found=false;
-        BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+        BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();  // Adapter oproepen
         if (bluetoothAdapter == null) {
             Toast.makeText(currCtx,"Device doesnt Support Bluetooth",Toast.LENGTH_SHORT).show();
             Log.d("btm", "Device doesnt Support Bluetooth");
         }
         if(!bluetoothAdapter.isEnabled())
         {
-            Toast.makeText(currCtx,"Please Pair the Device first",Toast.LENGTH_SHORT).show();
+            Toast.makeText(currCtx,"Please enable bluetooth",Toast.LENGTH_SHORT).show();
             Log.d("btm", "Please Pair the Device first 1");
-            /*
-            Intent enableAdapter = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableAdapter, 0);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-             }
-             */
+
         }
-        Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
+        Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();  //Lijst met gepairde devices oproepen
         if(bondedDevices.isEmpty())
         {
             Toast.makeText(currCtx,"Please Pair the Device first",Toast.LENGTH_SHORT).show();
@@ -96,6 +86,10 @@ public class BluetoothManager {
                     found=true;
                     break;
                 }
+                else{
+                    Toast.makeText(currCtx,"Please Pair the Device first",Toast.LENGTH_SHORT).show();
+                    Log.d("btm", "Please Pair the Device first 3");
+                }
             }
         }
         Log.d("btm", "Found: "+ Boolean.toString(found));
@@ -103,7 +97,7 @@ public class BluetoothManager {
 
     }
 
-    public boolean BTconnect() {
+    public boolean BTconnect() {  //socket connectie aanmaken
         boolean connected=true;
         try {
             socket = device.createRfcommSocketToServiceRecord(PORT_UUID);
@@ -114,11 +108,6 @@ public class BluetoothManager {
         }
         if(connected)
         {
-            try {
-                outputStream=socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             try {
                 inputStream=socket.getInputStream();
             } catch (IOException e) {
@@ -132,7 +121,7 @@ public class BluetoothManager {
         return connected;
     }
 
-    void beginListenForData() {
+    void beginListenForData() {  //Nieuwe thread aanmaken met handler die luistert naar data
         final Handler handler = new Handler();
         stopThread = false;
         buffer = new byte[1024];
@@ -172,22 +161,9 @@ public class BluetoothManager {
 
     public void onClickStop(View view) throws IOException {
         stopThread = true;
-        outputStream.close();
         inputStream.close();
         socket.close();
-        //setUiEnabled(false);
         deviceConnected = false;
-        //txtBluetooth.append( "\nConnection Closed!\n" );
     }
 
-
-    /*public void transmit(String input) {
-        byte[] operation = input.getBytes();
-        try{
-            outputStream.write(operation);
-        } catch(IOException e){
-            Toast.makeText(currCtx,"Transmission failed",Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }*/
 }

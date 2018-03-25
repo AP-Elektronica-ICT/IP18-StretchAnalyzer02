@@ -41,7 +41,8 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/settings"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:onClick="onClickSettings"/>
         </RelativeLayout>
 
         //Header

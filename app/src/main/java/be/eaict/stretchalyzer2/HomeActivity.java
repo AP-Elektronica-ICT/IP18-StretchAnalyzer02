@@ -1,7 +1,5 @@
 package be.eaict.stretchalyzer2;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -14,9 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.os.Handler;
 
 import com.jjoe64.graphview.GraphView;
@@ -33,7 +29,6 @@ import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity {
@@ -228,6 +223,18 @@ public class HomeActivity extends AppCompatActivity {
 
     void stopRepeatingTask() {
         mHandler.removeCallbacks(mDataChecker);
+    }
+
+
+    //OnClickListener naar settings activity
+    public void onClickSettings(View view){
+        openApplicationSettingsActivity();
+    }
+
+    //Intent method naar settings activity
+    private void openApplicationSettingsActivity() {
+        Intent intent = new Intent(HomeActivity.this, Settings.class);
+        startActivity(intent);
     }
 
 }

@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -143,24 +144,46 @@ public class HomeActivity extends AppCompatActivity {
         //graph
         GraphView graph =  findViewById(R.id.graph);
 
-        graph.getViewport().setScrollable(true);
-        graph.getViewport().setScrollableY(true);
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
-        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
-        graph.getGridLabelRenderer().setHighlightZeroLines(true);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
-        graph.getViewport().setBackgroundColor(Color.WHITE);
-
+        //data aan graph toevoegen
         series = new LineGraphSeries<DataPoint>();
         for (int i = 0; i<mSec.size(); i++){
             x = Double.parseDouble(mSec.get(i));
             y = Double.parseDouble(angle.get(i));
             series.appendData(new DataPoint(x,y),true,mSec.size());
         }
+
+        //layout grafiek
+        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
+        graph.getGridLabelRenderer().setHighlightZeroLines(true);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+        graph.getViewport().setBackgroundColor(Color.WHITE);
+        graph.getViewport().scrollToEnd();
+
+        // vieuwport waarde tussen 120 en - 120 y-as
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(-120);
+        graph.getViewport().setMaxY(120);
+
+        // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(Double.parseDouble(Collections.max(mSec)));
+
+        //scaling en scrolling
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScalableY(true);
+
+        // data toevoegen aan graph
         graph.addSeries(series);
+
+        //layout data
+        series.setTitle("Stretching");
+        series.setColor(Color.RED);
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(6);
+        series.setThickness(4);
     }
 
     @Override

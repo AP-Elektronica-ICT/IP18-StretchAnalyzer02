@@ -39,7 +39,7 @@ import java.util.UUID;
 public class HomeActivity extends AppCompatActivity {
 
 
-    //graph
+    //Graph declaration
     LineGraphSeries<DataPoint> series;
     private String numberMs;
     private String numberAngle;
@@ -122,8 +122,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    //Graph creation
+    //Graph Method
     public void createGraph(){
+
         //data uitlezen uit text files (graph)
         try {
             InputStream streamMs = getAssets().open("ms.txt");
@@ -141,7 +142,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //graph
+        //graphvieuw aanmaken
         GraphView graph =  findViewById(R.id.graph);
 
         //data aan graph toevoegen
@@ -152,14 +153,23 @@ public class HomeActivity extends AppCompatActivity {
             series.appendData(new DataPoint(x,y),true,mSec.size());
         }
 
+        // data toevoegen aan graph
+        graph.addSeries(series);
+
+        //vertical axsis title
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Angle");
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLUE);
+        graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(40);
+
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor(Color.BLACK);
         graph.getGridLabelRenderer().setHighlightZeroLines(true);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
         graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
         graph.getViewport().setBackgroundColor(Color.WHITE);
-        graph.getViewport().scrollToEnd();
+
+        //miliseconds onzichtbaar
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
         // vieuwport waarde tussen 120 en - 120 y-as
         graph.getViewport().setYAxisBoundsManual(true);
@@ -175,8 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         graph.getViewport().setScalable(true);
         graph.getViewport().setScalableY(true);
 
-        // data toevoegen aan graph
-        graph.addSeries(series);
+
 
         //layout data
         series.setTitle("Stretching");

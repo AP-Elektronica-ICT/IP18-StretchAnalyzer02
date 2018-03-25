@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -38,7 +39,7 @@ import java.util.UUID;
 public class HomeActivity extends AppCompatActivity {
 
 
-    //graph
+    //Graph declaration
     LineGraphSeries<DataPoint> series;
     private String numberMs;
     private String numberAngle;
@@ -121,8 +122,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    //Graph creation
+    //Graph Method
     public void createGraph(){
+
         //data uitlezen uit text files (graph)
         try {
             InputStream streamMs = getAssets().open("ms.txt");
@@ -140,27 +142,57 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //graph
+        //graphvieuw aanmaken
         GraphView graph =  findViewById(R.id.graph);
 
-        graph.getViewport().setScrollable(true);
-        graph.getViewport().setScrollableY(true);
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
-        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
-        graph.getGridLabelRenderer().setHighlightZeroLines(true);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
-        graph.getViewport().setBackgroundColor(Color.WHITE);
-
+        //data aan graph toevoegen
         series = new LineGraphSeries<DataPoint>();
         for (int i = 0; i<mSec.size(); i++){
             x = Double.parseDouble(mSec.get(i));
             y = Double.parseDouble(angle.get(i));
             series.appendData(new DataPoint(x,y),true,mSec.size());
         }
+
+        // data toevoegen aan graph
         graph.addSeries(series);
+
+        //vertical axsis title
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Angle");
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLUE);
+        graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(40);
+
+        //layout grafiek
+        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
+        graph.getGridLabelRenderer().setHighlightZeroLines(true);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+        graph.getViewport().setBackgroundColor(Color.WHITE);
+
+        //miliseconds onzichtbaar
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+        // vieuwport waarde tussen 120 en - 120 y-as
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(-120);
+        graph.getViewport().setMaxY(120);
+
+        // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(Double.parseDouble(Collections.max(mSec)));
+
+        //scaling en scrolling
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScalableY(true);
+
+
+
+        //layout data
+        series.setTitle("Stretching");
+        series.setColor(Color.RED);
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(6);
+        series.setThickness(4);
     }
 
     @Override

@@ -237,4 +237,9 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //android lifecycle
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

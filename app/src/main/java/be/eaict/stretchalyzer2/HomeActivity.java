@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         startRepeatingTask();
         ctx = this.getApplicationContext();
         btnStart = findViewById( R.id.btnStart );
-        text = "Start exercising!";
+        text = "Start excercising!";
 
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
     //Data checker
     Runnable mDataChecker = new Runnable() {
         @Override
-        public void run() {
+        public void run() {  //Repeating task 
             try{
                 try {
                     data = new String(BluetoothManager.getInstance(ctx).buffer, StandardCharsets.UTF_8);

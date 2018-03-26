@@ -189,7 +189,7 @@ gettaso();        //ala- vai ylätaso
           if (edellpMaksimi < pMaksimi){ 
             edellpMaksimi = pMaksimi;
             alamuuttuja = asin(max (-9.81, edellpMaksimi)/9.81)/3.14*180;
-             alakulma = (alamuuttuja)*(-1);       //ei toimi
+             alakulma = (alamuuttuja) - 90;       //ei toimi
             Serial.print(aika);
             Serial.print("\t alakulma \t");
             Serial.println(alakulma);

@@ -171,9 +171,10 @@ gettaso();        //ala- vai ylätaso
              ylamuuttuja = asin(max (-9.81, edellpMinimi)/9.81)/3.14*180;
              ylakulma = ylamuuttuja + 90;
              Serial.print(aika);
-             Serial.print("\t ylakulma \t");
-             Serial.println(ylakulma);
-             if (ylakulma > suurinkulma){
+               Serial.print("yla");
+             /*Serial.print("\t ylakulma \t");
+             Serial.println(ylakulma);*/
+             if (ylamuuttuja > suurinkulma){    //huom. ylamuuttuja, ei ylakulma
              suurinkulma = ylakulma;
            }
             //kulmayla();
@@ -191,9 +192,10 @@ gettaso();        //ala- vai ylätaso
             alamuuttuja = asin(max (-9.81, edellpMaksimi)/9.81)/3.14*180;
              alakulma = (alamuuttuja) - 90;       //ei toimi
             Serial.print(aika);
-            Serial.print("\t alakulma \t");
-            Serial.println(alakulma);
-               if (alakulma < pieninkulma){
+              Serial.print("ala");
+           /* Serial.print("\t alakulma \t");
+            Serial.println(alakulma);*/
+               if (alamuuttuja < pieninkulma){ //huom. alamuuttuja, ei alakulma
              pieninkulma = alakulma;
            }
             //kulmaala();
@@ -215,6 +217,7 @@ gettaso();        //ala- vai ylätaso
       pMinimi = 99;
    edellMaksimi = -99;
    ylataso = 0;
+    suurinkulma = 0;
     }
   
   } 
@@ -234,6 +237,7 @@ gettaso();        //ala- vai ylätaso
   pMaksimi = -99;
   edellMinimi = 99;
   alataso = 0;
+  pieninkulma = 0;
     }
   }
 

@@ -23,7 +23,9 @@ int sensorValue2 = 0;        // z
 double kiihtyvyys_x = 0;  //x-akselin kiihtyvyys m/s^2
 double kiihtyvyys_y = 0;  //x-akselin kiihtyvyys m/s^2
 double kiihtyvyys_z = 0;  //x-akselin kiihtyvyys m/s^2
+double edellkiiht = 0;
 unsigned long aika = 0;
+
 int x;
 int y;
 int z;
@@ -31,6 +33,8 @@ int tila;
 int edelltila = 0;
 int ylataso = 0;
 int alataso = 0;
+
+
 
 int GetTila() //tarkistaa tilan tai luo sen
 { 
@@ -93,15 +97,15 @@ void setup()
 
 void loop ()
 {
+  edellkiiht = kiihtyvyys_x;
   edelltila = tila;
   sensorValue0 = analogRead(analogInPin0);
   sensorValue1 = analogRead(analogInPin1);
   sensorValue2 = analogRead(analogInPin2);
    //jannite = sensorValue/1023.0 * 5.0;
   aika = millis();
+  
 
-  GetTila();    
-    GetTaso();    
     
   kiihtyvyys_x = 0.1401 * sensorValue0 -49.33;        //kiihtyvyydet
   kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
@@ -111,6 +115,13 @@ void loop ()
   
   kiihtyvyys_z = 0.1382 * sensorValue2 -49.093;
   kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
+
+if (edellkiiht > kiihtyvyys_x + 2 || edellkiiht < kiihtyvyys_x - 2)  //tilan tarkistus
+    {
+  GetTila(); 
+     GetTaso();    
+    
+    }   
 
 
   Serial.print(kiihtyvyys_x);

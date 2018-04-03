@@ -56,30 +56,30 @@ int getTila() //tarkistaa tilan tai luo sen
   if(kiihtyvyys_x > 1)
     {
     tila = 1;
-    if (PIENIN !=0)
+    /*if (PIENIN !=0)
     {
     Serial.print(aika);
     Serial.print("\t");
     Serial.print(PIENIN);
     Serial.println("");
-      delay (50);
+      delay (10);
     }
-    PIENIN = 0;
-    return tila, PIENIN;
+    PIENIN = 0;*/
+    return tila;//, PIENIN;
     }
     else if(kiihtyvyys_x <  -1)
     {
       tila = -1;
-      if (SUURIN != 0.00)
+     /* if (SUURIN != 0.00)
       {
      Serial.print(aika);
      Serial.print("\t");
      Serial.print(SUURIN);
      Serial.println("");
-       delay (50);
+       delay (10);
       }
-      SUURIN = 0;
-      return tila, SUURIN;
+      SUURIN = 0;*/
+      return tila;//, SUURIN;
     }  
     else
     {
@@ -93,12 +93,28 @@ double getTaso() //onko alataso vai ylataso
       if(tila == 1 && edelltila == 1)
       {
          ylataso = 1;
-         return ylataso;
+       if (PIENIN !=0)
+       {
+        Serial.print(aika);
+        Serial.print("\t");
+        Serial.print(PIENIN);
+        Serial.println("");
+        }
+        PIENIN = 0;
+         return ylataso, PIENIN;
       }
      else if(tila == -1 && edelltila == -1)
      {
       alataso = 1;
-      return alataso;
+       if (SUURIN != 0.00)
+      {
+     Serial.print(aika);
+     Serial.print("\t");
+     Serial.print(SUURIN);
+     Serial.println("");
+      }
+      SUURIN = 0;
+      return alataso, SUURIN;
      }
     else
     {

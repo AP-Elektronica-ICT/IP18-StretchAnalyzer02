@@ -32,6 +32,9 @@ double  edellpMaksimi = -99;
 double  edellpMinimi = 99;
 double  Maksimi = 0;
 double  Minimi = 0;
+double  suurinkulma = 0;
+double  pieninkulma = 0;
+
 
 unsigned long aika = 0;
 
@@ -86,13 +89,13 @@ double getTaso() //onko alataso vai ylataso
 
 double  getMaksimi()
 {
-Maksimi = kiihtyvyys_x;
+Maksimi = kiihtyvyys_x;/*
 Serial.print(aika);
   Serial.print("\t");
 Serial.print(Maksimi);
   Serial.print("\t");
-
-  if (Maksimi > 7 && Maksimi < 9.81)
+*/
+  if (Maksimi > 6 && Maksimi < 9.81)
   {
       pMinimi = kiihtyvyys_x;
       if (edellMaksimi < Maksimi)
@@ -103,8 +106,13 @@ Serial.print(Maksimi);
       double ylakuluma = max (-9.81, edellpMinimi);
       ylamuuttuja = asin(ylakuluma/9.81)/3.14*180;
       ylakulma = ylamuuttuja + 90;
-      Serial.print(ylakulma);
+      if (suurinkulma < ylakulma){    //tähän joku parempi ehto, idea olisi että kulma olisi suurempi
+          suurinkulma = ylakulma;
+          }
+      Serial.print(aika);
       Serial.print("\t");
+      Serial.print(suurinkulma);
+      Serial.println("");
       }
   }
   return Maksimi;
@@ -113,12 +121,13 @@ Serial.print(Maksimi);
 double   getMinimi()
 {
    Minimi = kiihtyvyys_x;
+   /*
    Serial.print(aika);
   Serial.print("\t");
    Serial.print(Minimi);
-  Serial.print("\t");
+  Serial.print("\t");*/
 
-  if (Minimi < -7 && Minimi > -9.81)
+  if (Minimi < -6 && Minimi > -9.81)
   {
     pMaksimi = kiihtyvyys_x;
        if (edellMinimi > Minimi)
@@ -131,8 +140,13 @@ double   getMinimi()
 
               alamuuttuja = asin(alakuluma/9.81)/3.14*180;
         alakulma = alamuuttuja - 90;
-        Serial.print(alakulma);
+        if (pieninkulma > alakulma){ //tähän joku parempi ehto, idea olisi että kulma olisi pienempi
+          pieninkulma = alakulma;
+          }
+        Serial.print(aika);
         Serial.print("\t");
+        Serial.print(pieninkulma);
+        Serial.println("");
            alamuuttuja = 0;
         alakulma = 0;
        }
@@ -203,7 +217,7 @@ if(alataso == 1)
   }
 
 
-  Serial.print(aika);
+/*  Serial.print(aika);
   Serial.print("\t");
   Serial.print(kiihtyvyys_x);
   Serial.print("\t");
@@ -212,12 +226,14 @@ if(alataso == 1)
   Serial.print(kiihtyvyys_z);
   Serial.print("\t ");
   Serial.print(tila);
-  Serial.print("\t ");*/
+  Serial.print("\t ");
   Serial.print(ylataso);
   Serial.print("\t ");
   Serial.print(alataso);
-  Serial.println("\t ");
+  Serial.println("\t ");*/
   delay (50);
+suurinkulma = 0;
+pieninkulma = 0;
 }
 
 

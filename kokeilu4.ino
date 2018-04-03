@@ -20,10 +20,19 @@ int sensorValue0 = 0;        // x
 int sensorValue1 = 0;        // y
 int sensorValue2 = 0;        // z
 
-double kiihtyvyys_x = 0;  //x-akselin kiihtyvyys m/s^2
-double kiihtyvyys_y = 0;  //x-akselin kiihtyvyys m/s^2
-double kiihtyvyys_z = 0;  //x-akselin kiihtyvyys m/s^2
-double edellkiiht = 0;
+double  kiihtyvyys_x = 0;  //x-akselin kiihtyvyys m/s^2
+double  kiihtyvyys_y = 0;  //x-akselin kiihtyvyys m/s^2
+double  kiihtyvyys_z = 0;  //x-akselin kiihtyvyys m/s^2
+double  edellkiiht = 0;
+double  edellMaksimi = -99;
+double  edellMinimi = 99;
+double  pMaksimi = -99;
+double  pMinimi = 99;
+double  edellpMaksimi = -99;
+double  edellpMinimi = 99;
+double  Maksimi = 0;
+double  Minimi = 0;
+
 unsigned long aika = 0;
 
 int x;
@@ -36,7 +45,7 @@ int alataso = 0;
 
 
 
-int GetTila() //tarkistaa tilan tai luo sen
+int getTila() //tarkistaa tilan tai luo sen
 { 
   if(kiihtyvyys_x > 1)
     {
@@ -55,7 +64,7 @@ int GetTila() //tarkistaa tilan tai luo sen
     }
 }
 
-double GetTaso() //onko alataso vai ylataso
+double getTaso() //onko alataso vai ylataso
 {     
       if(tila == 1 && edelltila == 1)
       {
@@ -75,6 +84,64 @@ double GetTaso() //onko alataso vai ylataso
     }
 }
 
+double  getMaksimi()
+{
+Maksimi = kiihtyvyys_x;
+Serial.print(aika);
+  Serial.print("\t");
+Serial.print(Maksimi);
+  Serial.print("\t");
+
+  if (Maksimi > 7 && Maksimi < 9.81)
+  {
+      pMinimi = kiihtyvyys_x;
+      if (edellMaksimi < Maksimi)
+      {
+        edellpMinimi = pMinimi;
+      double ylamuuttuja;
+      double ylakulma;
+      double ylakuluma = max (-9.81, edellpMinimi);
+      ylamuuttuja = asin(ylakuluma/9.81)/3.14*180;
+      ylakulma = ylamuuttuja + 90;
+      Serial.print(ylakulma);
+      Serial.print("\t");
+      }
+  }
+  return Maksimi;
+}
+
+double   getMinimi()
+{
+   Minimi = kiihtyvyys_x;
+   Serial.print(aika);
+  Serial.print("\t");
+   Serial.print(Minimi);
+  Serial.print("\t");
+
+  if (Minimi < -7 && Minimi > -9.81)
+  {
+    pMaksimi = kiihtyvyys_x;
+       if (edellMinimi > Minimi)
+       {
+        edellpMaksimi = pMaksimi;
+        double alamuuttuja = 99;
+        double alakulma = 99;
+        double alakuluma = max(-9.81, edellpMaksimi);
+       // alamuuttuja = asin(min (-9.81, edellpMaksimi)/9.81)/3.14*180;
+
+              alamuuttuja = asin(alakuluma/9.81)/3.14*180;
+        alakulma = alamuuttuja - 90;
+        Serial.print(alakulma);
+        Serial.print("\t");
+           alamuuttuja = 0;
+        alakulma = 0;
+       }
+      
+  }
+
+  
+  return Minimi;
+}
 
 void setup()
 {
@@ -99,6 +166,8 @@ void loop ()
 {
   edellkiiht = kiihtyvyys_x;
   edelltila = tila;
+  edellMaksimi = Maksimi;
+  edellMinimi = Minimi;
   sensorValue0 = analogRead(analogInPin0);
   sensorValue1 = analogRead(analogInPin1);
   sensorValue2 = analogRead(analogInPin2);
@@ -116,22 +185,34 @@ void loop ()
   kiihtyvyys_z = 0.1382 * sensorValue2 -49.093;
   kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
 
-if (edellkiiht > kiihtyvyys_x + 2 || edellkiiht < kiihtyvyys_x - 2)  //tilan tarkistus
+if (edellkiiht > kiihtyvyys_x + 1.5 || edellkiiht < kiihtyvyys_x - 1.5)  //tilan tarkistus
     {
-  GetTila(); 
-     GetTaso();    
-    
+  getTila(); 
     }   
 
+getTaso();    
 
+if(ylataso == 1)
+  {
+  getMaksimi();
+  }
+
+if(alataso == 1) 
+  {
+  getMinimi();
+  }
+
+
+  Serial.print(aika);
+  Serial.print("\t");
   Serial.print(kiihtyvyys_x);
   Serial.print("\t");
-  Serial.print(kiihtyvyys_y);
+  /*Serial.print(kiihtyvyys_y);
   Serial.print("\t ");
   Serial.print(kiihtyvyys_z);
   Serial.print("\t ");
   Serial.print(tila);
-  Serial.print("\t ");
+  Serial.print("\t ");*/
   Serial.print(ylataso);
   Serial.print("\t ");
   Serial.print(alataso);

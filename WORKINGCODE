@@ -39,6 +39,7 @@ double  PIENIN = 0;
 
 
 
+
 unsigned long aika = 0;
 
 int x;
@@ -53,33 +54,33 @@ int alataso = 0;
 
 int getTila() //tarkistaa tilan tai luo sen
 { 
-  if(kiihtyvyys_x > 1)
+  if(y < -750)
     {
     tila = 1;
-    if (PIENIN !=0)
+    /*if (PIENIN !=0)
     {
     Serial.print(aika);
     Serial.print("\t");
     Serial.print(PIENIN);
     Serial.println("");
-      delay (50);
+      delay (10);
     }
-    PIENIN = 0;
-    return tila, PIENIN;
+    PIENIN = 0;*/
+    return tila;//, PIENIN;
     }
-    else if(kiihtyvyys_x <  -1)
+    else if(y > 750)
     {
       tila = -1;
-      if (SUURIN != 0.00)
+     /* if (SUURIN != 0.00)
       {
      Serial.print(aika);
      Serial.print("\t");
      Serial.print(SUURIN);
      Serial.println("");
-       delay (50);
+       delay (10);
       }
-      SUURIN = 0;
-      return tila, SUURIN;
+      SUURIN = 0;*/
+      return tila;//, SUURIN;
     }  
     else
     {
@@ -93,12 +94,32 @@ double getTaso() //onko alataso vai ylataso
       if(tila == 1 && edelltila == 1)
       {
          ylataso = 1;
-         return ylataso;
+       if (PIENIN !=0)
+       {
+        //Serial.print(aika);
+        //Serial.print("\t");
+        //Serial.print(kiihtyvyys_x);
+        //Serial.print("\t");
+        //Serial.print(PIENIN);
+        //Serial.println("");
+        }
+        PIENIN = 0;
+         return ylataso, PIENIN;
       }
      else if(tila == -1 && edelltila == -1)
      {
       alataso = 1;
-      return alataso;
+       if (SUURIN != 0.00)
+      {
+   //  Serial.print(aika);
+     //Serial.print("\t");
+     //Serial.print(kiihtyvyys_x);
+     //Serial.print("\t");
+     //Serial.print(SUURIN);
+     //Serial.println("");
+      }
+      SUURIN = 0;
+      return alataso, SUURIN;
      }
     else
     {
@@ -116,7 +137,7 @@ Serial.print(aika);
 Serial.print(Maksimi);
   Serial.print("\t");
 */
-  if (Maksimi > 6 && Maksimi < 9.81)
+  if (y < -1750 && Maksimi < 9.81)
   {
       pMinimi = kiihtyvyys_x;
       if (edellMaksimi < Maksimi)
@@ -154,7 +175,7 @@ double   getMinimi()
    Serial.print(Minimi);
   Serial.print("\t");*/
 
-  if (Minimi < -6 && Minimi > -9.81)
+  if (Minimi > -9.81)
   {
     pMaksimi = kiihtyvyys_x;
        if (edellMinimi > Minimi)
@@ -221,9 +242,9 @@ void loop ()
    //jannite = sensorValue/1023.0 * 5.0;
   aika = millis();
   
-
+  getGyroValues();
     
-  kiihtyvyys_x = 0.1401 * sensorValue0 -49.33;        //kiihtyvyydet
+   kiihtyvyys_x = 0.1401 * sensorValue0 -49.33;        //kiihtyvyydet
   kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
   
   kiihtyvyys_y = 0.1391 * sensorValue1 -48.726;
@@ -231,6 +252,7 @@ void loop ()
   
   kiihtyvyys_z = 0.1382 * sensorValue2 -49.093;
   kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
+
 
 if (edellkiiht > kiihtyvyys_x + 1.5 || edellkiiht < kiihtyvyys_x - 1.5)  //tilan tarkistus
     {
@@ -249,11 +271,20 @@ if(alataso == 1)
   getMinimi();
   }
 
-
-/*  Serial.print(aika);
+  Serial.print(aika);
   Serial.print("\t");
   Serial.print(kiihtyvyys_x);
   Serial.print("\t");
+  Serial.print(SUURIN);
+  Serial.print("\t");
+  Serial.print(PIENIN);
+  Serial.print("\t");
+  //Serial.print(x);
+  //Serial.print("\t");
+  Serial.print(y);
+  //Serial.print("\t");
+  //Serial.print(z);
+  Serial.println("\t");
   /*Serial.print(kiihtyvyys_y);
   Serial.print("\t ");
   Serial.print(kiihtyvyys_z);

@@ -243,15 +243,18 @@ void loop ()
   aika = millis();
   
   getGyroValues();
+
+
+
     
-   kiihtyvyys_x = 0.1401 * sensorValue0 -49.33;        //kiihtyvyydet
-  kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
+    kiihtyvyys_x = 0.1438 * sensorValue0 - 51.705;        //kiihtyvyydet
+    kiihtyvyys_x = constrain(kiihtyvyys_x, -9.81, 9.81);
   
-  kiihtyvyys_y = 0.1391 * sensorValue1 -48.726;
-  kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
+    kiihtyvyys_y = 0.1344 * sensorValue1 - 48.285;
+    kiihtyvyys_y = constrain(kiihtyvyys_y, -9.81, 9.81);
   
-  kiihtyvyys_z = 0.1382 * sensorValue2 -49.093;
-  kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
+    kiihtyvyys_z = 0.1353 * sensorValue2 - 49.143;
+    kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
 
 
 if (edellkiiht > kiihtyvyys_x + 1.5 || edellkiiht < kiihtyvyys_x - 1.5)  //tilan tarkistus
@@ -274,6 +277,12 @@ if(alataso == 1)
   Serial.print(aika);
   Serial.print("\t");
   Serial.print(kiihtyvyys_x);
+  Serial.print("\t");
+
+    Serial.print(kiihtyvyys_y);
+  Serial.print("\t");
+
+    Serial.print(kiihtyvyys_z);
   Serial.print("\t");
   Serial.print(SUURIN);
   Serial.print("\t");

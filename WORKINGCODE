@@ -137,15 +137,17 @@ Serial.print(aika);
 Serial.print(Maksimi);
   Serial.print("\t");
 */
-  if (y < -1750 && Maksimi < 9.81)
+  if (Maksimi < 9.81)
   {
+       edellpMinimi = pMinimi;
       pMinimi = kiihtyvyys_x;
       if (edellMaksimi < Maksimi)
       {
-        edellpMinimi = pMinimi;
+       
       double ylamuuttuja;
       double ylakulma;
-      double ylakuluma = max (-9.81, edellpMinimi);
+      double ylakuluma;
+      ylakuluma = max (-9.81, edellpMinimi);
       ylamuuttuja = asin(ylakuluma/9.81)/3.14*180;
       ylakulma = ylamuuttuja + 90;
       if (suurinkulma < ylakulma){    //tähän joku parempi ehto, idea olisi että kulma olisi suurempi
@@ -177,13 +179,14 @@ double   getMinimi()
 
   if (Minimi > -9.81)
   {
+    edellpMaksimi = pMaksimi;
     pMaksimi = kiihtyvyys_x;
        if (edellMinimi > Minimi)
        {
-        edellpMaksimi = pMaksimi;
         double alamuuttuja = 99;
         double alakulma = 99;
-        double alakuluma = max(-9.81, edellpMaksimi);
+        double alakuluma;
+        alakuluma = max(-9.81, edellpMaksimi);
        // alamuuttuja = asin(min (-9.81, edellpMaksimi)/9.81)/3.14*180;
 
               alamuuttuja = asin(alakuluma/9.81)/3.14*180;

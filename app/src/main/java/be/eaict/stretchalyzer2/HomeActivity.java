@@ -86,6 +86,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 speak( text );
+                openExerciseActivity();
+
             }
         } );
 
@@ -166,10 +168,10 @@ public class HomeActivity extends AppCompatActivity {
         //miliseconds onzichtbaar
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
-        // vieuwport waarde tussen 120 en - 120 y-as
+        // vieuwport waarde tussen 180 en - 180 y-as
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-120);
-        graph.getViewport().setMaxY(120);
+        graph.getViewport().setMinY(-180);
+        graph.getViewport().setMaxY(180);
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual(true);
@@ -177,8 +179,8 @@ public class HomeActivity extends AppCompatActivity {
         graph.getViewport().setMaxX(Double.parseDouble(Collections.max(mSec)));
 
         //scaling en scrolling
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
+        graph.getViewport().setScrollable(true);
+        graph.getViewport().setScrollableY(true);
 
 
 
@@ -229,6 +231,13 @@ public class HomeActivity extends AppCompatActivity {
     //OnClickListener naar settings activity
     public void onClickSettings(View view){
         openApplicationSettingsActivity();
+    }
+
+
+    //Intent method naar exercise activity
+    private void openExerciseActivity() {
+        Intent intent = new Intent(HomeActivity.this, ExerciseActivity.class);
+        startActivity(intent);
     }
 
     //Intent method naar settings activity

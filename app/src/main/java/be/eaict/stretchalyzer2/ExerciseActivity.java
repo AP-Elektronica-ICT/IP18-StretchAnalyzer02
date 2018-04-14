@@ -75,8 +75,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
         // vieuwport waarde tussen 180 en - 180 y-as
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-20);
-        graph.getViewport().setMaxY(20);
+        graph.getViewport().setMinY(-100);
+        graph.getViewport().setMaxY(100);
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual(true);
@@ -126,7 +126,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
     private void addDatapoints() {
         //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
-        series.appendData(new DataPoint(mSec+=50, angle2), true, 12000);
+        series.appendData(new DataPoint(mSec+=50, angle), true, 12000);
     }
 
     public void createAccelerometer(){
@@ -152,9 +152,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         //formule angle acc (werkt niet)
-       angle =  Math.asin((angle2/9.81)/(Math.PI*180));
-       //yvalue van accelerometer
-       angle2 = sensorEvent.values[1];
+       angle =  Math.asin(sensorEvent.values[1]/9.81)/Math.PI*180;
+
 
        //test textvieuws mag weg nadien
         yValue.setText("Angle :" + angle);

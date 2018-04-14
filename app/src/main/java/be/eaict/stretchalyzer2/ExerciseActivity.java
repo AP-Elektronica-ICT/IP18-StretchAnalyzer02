@@ -70,13 +70,13 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
         graph.getViewport().setBackgroundColor(Color.WHITE);
 
-        //miliseconds onzichtbaar
+        //miliseconds zichtbaar
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
 
         // vieuwport waarde tussen 180 en - 180 y-as
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-100);
-        graph.getViewport().setMaxY(100);
+        graph.getViewport().setMinY(-180);
+        graph.getViewport().setMaxY(180);
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual(true);

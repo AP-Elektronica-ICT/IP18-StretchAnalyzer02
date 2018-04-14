@@ -1,6 +1,7 @@
 package be.eaict.stretchalyzer2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,21 +10,13 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 
 /**
  * Created by Cé on 4/11/2018.
@@ -31,19 +24,18 @@ import java.util.Random;
 
 public class ExerciseActivity extends AppCompatActivity implements SensorEventListener {
 
-    //accelerometer  declaration
-    private SensorManager sensorManager;
-    Sensor accelrometer;
+    //declaration sensor
+    Sensor accSensor;
 
-    //declatration test textvieuws
-    TextView yValue,xValue;
+    //declatration test textvieuws mag weg nadien !!!
+    TextView yValue;
 
     // graph declarations
     private LineGraphSeries<DataPoint> series;
     private int mSec;
-    double angle;
-    double angle2;
+    private double angle;
 
+    //oncreate method
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +44,20 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         createGraphview();
     }
 
+    //method accelerometer
+    public void createAccelerometer(){
+        //permission
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // accelerometer waarde geven
+        accSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // eventlistener
+        sensorManager.registerListener(ExerciseActivity.this, accSensor,SensorManager.SENSOR_DELAY_NORMAL);
+
+        //test textvieuws mag weg nadien
+        yValue = (TextView) findViewById(R.id.yValue);
+    }
+
+    //method graphview
     private void createGraphview() {
         // graphvieuw aanmaken
         GraphView graph = (GraphView) findViewById(R.id.graph2);
@@ -94,15 +100,16 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     }
 
 
+    //onResume nodig voor live data
     @Override
     protected void onResume() {
         super.onResume();
-        // we're going to simulate real time with thread that append data to the graph
+        // simulate real time met thread
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-                //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
+                //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 50 miliseconden)
                 for (int i = 0; i < 12000; i++) {
                     runOnUiThread(new Runnable() {
 
@@ -124,23 +131,13 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     }
 
 
+    //datapoints toevoegen aan runnable
     private void addDatapoints() {
         //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
         series.appendData(new DataPoint(mSec+=50, angle), true, 12000);
     }
 
-    public void createAccelerometer(){
-        //permission
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        // accelerometer waarde geven
-        accelrometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        // eventlistener
-        sensorManager.registerListener(ExerciseActivity.this,accelrometer,SensorManager.SENSOR_DELAY_NORMAL);
 
-        //test textvieuws mag weg nadien
-        yValue = (TextView) findViewById(R.id.yValue);
-        xValue = (TextView) findViewById(R.id.xValue);
-    }
 
     //sensorEventlistener override method
     @Override
@@ -157,9 +154,14 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
        //test textvieuws mag weg nadien
         yValue.setText("Angle :" + angle);
-        xValue.setText(" " +sensorEvent.values[1]);
     }
 
-   
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+    //terug knop
+    public void onClickToHome(View view) {
+        onBackPressed();
+    }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -172,14 +173,14 @@ public class FBRepository implements IRepository {
 
 
     // get single user by name
-    public User getUser(String userName) {
+  /*  public User getUser(String userName) {
         for (User user : userCache.values()) {
             if (user.getUsername().equals( userName )) {
                 return user;
             }
         }
         return null;
-    }
+    }*/
 
     // get single user
     public User getUser(Integer userId) {

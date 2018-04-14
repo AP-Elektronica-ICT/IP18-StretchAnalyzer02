@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.eaict.stretchalyzer2.MainActivity">
+    tools:context="be.eaict.stretchalyzer2.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,77 +62,45 @@
                 tools:layout_editor_absoluteY="165dp"
                 android:layout_marginBottom="10dp"/>
 
-            <Button
-                android:id="@+id/btnLogin"
+            <EditText
+                android:id="@+id/txtRepeatPassword"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/edittextborder"
-                android:onClick="onClickLogin"
-                android:text="Login"
+                android:ems="10"
+                android:hint="Repeat Password"
+                android:inputType="textAutoCorrect|textPassword"
+                android:paddingStart="5pt"
                 tools:layout_editor_absoluteX="43dp"
-                tools:layout_editor_absoluteY="240dp"
+                tools:layout_editor_absoluteY="165dp"
                 android:layout_marginBottom="10dp"/>
 
+
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btnConfirm"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/edittextborder"
-                android:onClick="onClickRegister"
+                android:onClick="onClickConfirm"
                 android:text="Register"
                 tools:layout_editor_absoluteX="43dp"
                 tools:layout_editor_absoluteY="311dp" />
 
             <TextView
-                android:id="@+id/txtForgotPass"
+                android:id="@+id/txtAlreadyAcc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="@string/ForgotPassw"
+                android:text="@string/AlreadyAcc"
                 android:gravity="center"/>
         </LinearLayout>
 
 
 
-        //Icons
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Login with" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
-        </LinearLayout>
-
     </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

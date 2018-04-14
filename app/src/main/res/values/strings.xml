@@ -5,4 +5,9 @@
     <string name="set_time">Set time:</string>
     <string name="application_settings">Application Settings</string>
     <string name="set_notification">Set Notification</string>
+    <string name="stop_exercise">Stop Exercise</string>
+    <string name="count">Count:</string>
+    <string name="pic2">pic2</string>
+    <string name="pic1">pic1</string>
+    <string name="start_now">START NOW!</string>
 </resources>

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Handler;
 
@@ -158,6 +160,11 @@ public class HomeActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLUE);
         graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(40);
 
+        //horizontal axsis title
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("mSec");
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLUE);
+        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(40);
+
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor(Color.BLACK);
         graph.getGridLabelRenderer().setHighlightZeroLines(true);
@@ -179,13 +186,15 @@ public class HomeActivity extends AppCompatActivity {
         graph.getViewport().setMaxX(Double.parseDouble(Collections.max(mSec)));
 
         //scaling en scrolling
-        graph.getViewport().setScrollable(true);
-        graph.getViewport().setScrollableY(true);
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScalableY(true);
 
-
+        //title grafiek
+        graph.setTitle("24 Hour Activity Feed");
+        graph.setTitleTextSize(50);
+        graph.setTitleColor(Color.BLACK);
 
         //layout data
-        series.setTitle("Stretching");
         series.setColor(Color.RED);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(6);
@@ -251,4 +260,34 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
+    //historyActivity intent
+    public void onClickHistory(View view) {
+        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+        startActivity(intent);
+    }
+    //AccountActivity intent
+    public void onClickAccount(View view) {
+        Intent intent = new Intent(HomeActivity.this, AccountActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickNextExercise(View view) {
+        ImageView img,img2;
+        img  =  findViewById(R.id.imageView);
+        img2 =  findViewById(R.id.imageView2);
+        img.setImageResource(R.drawable.pic1);
+        img2.setImageResource(R.drawable.pic2);
+
+    }
+
+    public void onClickSelectedExercise(View view) {
+        ImageView img,img2;
+        img  = findViewById(R.id.imageView);
+        img2 = findViewById(R.id.imageView2);
+        img.setImageResource(R.drawable.pic2);
+        img2.setImageResource(R.drawable.pic1);
+    }
+
+
 }

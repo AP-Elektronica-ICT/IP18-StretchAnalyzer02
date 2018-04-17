@@ -2,9 +2,11 @@ package be.eaict.stretchalyzer2;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -14,7 +16,6 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,19 +35,44 @@ public class HistoryActivity extends AppCompatActivity {
     private ArrayList<String> mSec = new ArrayList<>();
     private double x,y;
 
-    //declaration datepicker
-    private TextView mDisplayDate1;
-    private DatePickerDialog.OnDateSetListener mDateSetListener1;
-    private TextView mDisplayDate2;
-    private DatePickerDialog.OnDateSetListener mDateSetListener2;
+    //declaration timepicker dialog
+    TextView startDate,endDate;
+    Calendar cal1,cal2;
+    int sDay,eDay,sMonth,eMonth,sYear,eYear;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        timePicker();
         createGraph();
 
+
+
+    }
+
+    // timepicker
+    public void timePicker(){
+        startDate = findViewById(R.id.textviewBeginDate);
+        endDate = findViewById(R.id.textviewEndDate);
+        cal1  = Calendar.getInstance();
+        cal2 = Calendar.getInstance();
+
+        eDay = cal1.get(Calendar.DAY_OF_MONTH);
+        eMonth = cal1.get(Calendar.MONTH);
+        eYear = cal1.get(Calendar.YEAR);
+
+        sDay = cal1.get(Calendar.DAY_OF_MONTH);
+        sMonth = cal2.get(Calendar.MONTH);
+        sYear = cal2.get(Calendar.YEAR);
+
+        sMonth = sMonth +1;
+        eMonth = eMonth +1;
+        String dateStart =  sDay+"/"+sMonth+"/"+sYear;
+        String dateEnd =  eDay+"/"+eMonth+"/"+eYear;
+        startDate.setText(dateStart);
+        endDate.setText(dateEnd);
     }
     //Graph Method
     public void createGraph(){
@@ -135,49 +161,31 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void OnClickEnd(View view) {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-      /*  DatePickerDialog dialog = new DatePickerDialog(
-                HistoryActivity.this,)*/
-
+        DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month+1;
+                endDate.setText(dayOfMonth+"/"+month+"/"+year);
+            }
+        },eYear,eMonth,eDay);
+        datePickerDialog.show();
     }
+
+
+
 
     public void OnClickStart(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month+1;
+                startDate.setText(dayOfMonth+"/"+month+"/"+year);
+            }
+        },sYear,sMonth,sDay);
+        datePickerDialog.show();
     }
+
+
 }
 
-/*    // generate Dates
-    Calendar calendar = Calendar.getInstance();
-    Date d1 = calendar.getTime();
-calendar.add(Calendar.DATE, 1);
-        Date d2 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d3 = calendar.getTime();
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
-
-// you can directly pass Date objects to DataPoint-Constructor
-// this will convert the Date to double via Date#getTime()
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-        new DataPoint(d1, 1),
-        new DataPoint(d2, 5),
-        new DataPoint(d3, 3)
-        });
-
-        graph.addSeries(series);
-
-// set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-
-// set manual x bounds to have nice steps
-        graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d3.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
-
-// as we use dates as labels, the human rounding to nice readable numbers
-// is not necessary
-        graph.getGridLabelRenderer().setHumanRounding(false);*/

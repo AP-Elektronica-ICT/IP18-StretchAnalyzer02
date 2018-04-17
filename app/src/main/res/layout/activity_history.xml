@@ -8,25 +8,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
+        android:weightSum="4"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/startdate2"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textviewBeginDate"
-            android:text="@string/startdate"
+            android:hint="@string/startdate"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="15sp"
             android:onClick="OnClickStart"/>
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15sp"/>
+
+        <TextView
             android:id="@+id/textviewEndDate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/enddate"
+            android:hint="@string/enddate"
             android:gravity="center"
             android:textSize="15sp"
             android:onClick="OnClickEnd"/>

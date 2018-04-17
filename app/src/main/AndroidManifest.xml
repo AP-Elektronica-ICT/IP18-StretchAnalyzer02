@@ -29,10 +29,10 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".Settings" />
         <activity android:name=".ExerciseActivity" />
-
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".RegisterActivity"/>
+        <activity android:name=".AccountActivity"/>
         <receiver android:name=".NotificationReciever" />
-
-        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

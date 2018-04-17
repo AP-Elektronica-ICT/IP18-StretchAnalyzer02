@@ -1,5 +1,6 @@
 package be.eaict.stretchalyzer2;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -24,13 +27,18 @@ import java.util.Collections;
 public class HistoryActivity extends AppCompatActivity {
 
     //Graph declaration
-    LineGraphSeries<DataPoint> series;
+    BarGraphSeries<DataPoint> series;
     private String numberMs;
     private String numberAngle;
     private ArrayList<String> angle = new ArrayList<>();
     private ArrayList<String> mSec = new ArrayList<>();
     private double x,y;
 
+    //declaration datepicker
+    private TextView mDisplayDate1;
+    private DatePickerDialog.OnDateSetListener mDateSetListener1;
+    private TextView mDisplayDate2;
+    private DatePickerDialog.OnDateSetListener mDateSetListener2;
 
 
     @Override
@@ -38,6 +46,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         createGraph();
+
     }
     //Graph Method
     public void createGraph(){
@@ -63,7 +72,7 @@ public class HistoryActivity extends AppCompatActivity {
         GraphView graph =  findViewById(R.id.graph3);
 
         //data aan graph toevoegen
-        series = new LineGraphSeries<DataPoint>();
+        series = new BarGraphSeries<>();
         for (int i = 0; i<mSec.size(); i++){
             x = Double.parseDouble(mSec.get(i));
             y = Double.parseDouble(angle.get(i));
@@ -73,13 +82,8 @@ public class HistoryActivity extends AppCompatActivity {
         // data toevoegen aan graph
         graph.addSeries(series);
 
-        //vertical axsis title
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Angle");
-        graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLUE);
-        graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(40);
-
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("mSec");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
         graph.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLUE);
         graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(40);
 
@@ -90,13 +94,14 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
         graph.getViewport().setBackgroundColor(Color.WHITE);
 
-        //miliseconds onzichtbaar
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        //waarde labels laten zien of niet
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
 
-        // vieuwport waarde tussen 180 en - 180 y-as
+        // vieuwport waarde tussen 200 en - 200 y-as
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-180);
-        graph.getViewport().setMaxY(180);
+        graph.getViewport().setMinY(-200);
+        graph.getViewport().setMaxY(200);
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual(true);
@@ -108,19 +113,39 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getViewport().setScalableY(true);
 
         //title grafiek
-        graph.setTitle("24 Hour Activity Feed");
+        graph.setTitle("Progression of Stretching");
         graph.setTitleTextSize(50);
         graph.setTitleColor(Color.BLACK);
 
         //layout data
-        series.setColor(Color.RED);
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(6);
-        series.setThickness(4);
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.RED);
+
+        //kleuren bargraph
+        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+            }
+        });
     }
 
     public void OnClickShowHistoryGraph(View view) {
         // firebase data ophalen
+    }
+
+    public void OnClickEnd(View view) {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+      /*  DatePickerDialog dialog = new DatePickerDialog(
+                HistoryActivity.this,)*/
+
+    }
+
+    public void OnClickStart(View view) {
     }
 }
 

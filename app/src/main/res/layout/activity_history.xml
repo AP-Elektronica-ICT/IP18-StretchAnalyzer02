@@ -19,7 +19,8 @@
             android:text="@string/startdate"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:onClick="OnClickStart"/>
         <TextView
             android:id="@+id/textviewEndDate"
             android:layout_width="match_parent"
@@ -27,7 +28,8 @@
             android:layout_weight="1"
             android:text="@string/enddate"
             android:gravity="center"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:onClick="OnClickEnd"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,8 +44,60 @@
     </RelativeLayout>
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/btnShowHistoryGraph"
         android:text="@string/show_graph"
-        android:onClick="OnClickShowHistoryGraph"/>
+        android:onClick="OnClickShowHistoryGraph"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textviewUP"
+            android:text="UP:"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/textviewUpProcent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="4%"
+            android:gravity="center"
+            android:textSize="15dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textviewDown"
+            android:text="Down:"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/textviewDownProcent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-3.7%"
+            android:gravity="center"
+            android:textSize="15dp"/>
+    </LinearLayout>
+
 </LinearLayout>

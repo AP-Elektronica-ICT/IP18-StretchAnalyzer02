@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -61,7 +62,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private void createGraphview() {
         // graphvieuw aanmaken
         GraphView graph = (GraphView) findViewById(R.id.graph2);
-        series = new LineGraphSeries<DataPoint>();
+        series = new LineGraphSeries<>();
         graph.addSeries(series);
 
         //vertical axsis title

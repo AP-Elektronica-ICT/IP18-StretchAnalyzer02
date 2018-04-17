@@ -15,4 +15,6 @@
     <string name="enddate">Select a End Date:</string>
     <string name="startdate">Select a Start Date:</string>
     <string name="show_graph">Show Graph</string>
+    <string name="startdate2">Start Date:</string>
+    <string name="end_date">End Date:</string>
 </resources>

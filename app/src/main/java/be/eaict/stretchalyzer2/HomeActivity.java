@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
         startRepeatingTask();
         ctx = this.getApplicationContext();
         btnStart = findViewById( R.id.btnStart );
-        text = "Start excercising!";
+        text = "Start exercising!";
 
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -116,8 +116,6 @@ public class HomeActivity extends AppCompatActivity {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
-
-
 
     //Graph Method
     public void createGraph(){

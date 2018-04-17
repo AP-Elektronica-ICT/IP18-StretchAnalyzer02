@@ -62,10 +62,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view) {
-        checkLogin();
-
         //WORK IN PROGRESS
-        /*
+
         TextView txtEmail = findViewById( R.id.txtName );
         TextView txtPassword = findViewById( R.id.txtPassword );
         email = txtEmail.getText().toString().trim();
@@ -76,14 +74,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Please fill in all forms.",
                     Toast.LENGTH_SHORT).show();
         }
-        */
-
     }
 
     private boolean checkLogin() {
         boolean checked = false;
 
-        if(email == "" || password == ""){
+        if(email != "" || password != ""){
             checked = true;
         }
 
@@ -106,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("Login", "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI();
                         }
 
                         // ...

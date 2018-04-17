@@ -1,5 +1,8 @@
 package be.eaict.stretchalyzer2.DOM;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Date;
 
 /**
@@ -7,24 +10,26 @@ import java.util.Date;
  */
 
 public class fxDatapoint {
-    private int id;
+    private String id;
     private int timestamp;
     private int fxPoint;
-    private Date datum;
+    private String datum;
+    String user;
 
 
-    public fxDatapoint(int id, int timestamp, int fxPoint, Date datum) {
+    public fxDatapoint(String id, int timestamp, int fxPoint, String datum, String user) {
         this.id = id;
         this.timestamp = timestamp;
         this.fxPoint = fxPoint;
         this.datum = datum;
+        this.user = user;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,11 +49,20 @@ public class fxDatapoint {
         this.fxPoint = fxPoint;
     }
 
-    public Date getDatum() {
+    public String getDatum() {
         return datum;
     }
 
-    public void setDatum(Date datum) {
+    public void setDatum(String datum) {
         this.datum = datum;
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
 }

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
-
 import be.eaict.stretchalyzer2.DOM.FBRepository;
 import be.eaict.stretchalyzer2.DOM.GlobalData;
-import be.eaict.stretchalyzer2.DOM.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkLogin() {
-        boolean checked = false;
+        boolean checked = true;
 
-        if(email != "" || password != ""){
-            checked = true;
+        if(email.isEmpty()){
+            if(password.isEmpty()){
+                checked = false;
+            }
         }
 
         return checked;
@@ -117,28 +115,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent( MainActivity.this, HomeActivity.class );
         startActivity( intent );
     }
-
-   /* private void checkLogin() {
-        List<User> users = FBRepository.getInstance().getUsers();
-        String name = ((EditText)findViewById(R.id.txtName)).getText().toString();
-        String pass = ((EditText)findViewById(R.id.txtPassword)).getText().toString();
-        for(User user : users){
-            // find user with correct name
-            if (user.getUsername().equals(name)){
-                // if pass is correct login is ok
-                if(user.getPassword().equals(pass)){
-                    GlobalData.currentUser = user;
-
-                }
-                break;
-            }
-        }
-        if(GlobalData.currentUser == null){
-            Toast.makeText(this, "invalid login", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            openHomeActivity();
-            finish();
-        }
-    }*/
 }

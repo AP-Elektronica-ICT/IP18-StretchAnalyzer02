@@ -10,9 +10,6 @@ import java.util.List;
 public interface IRepository {
 
     //region GETTERS
-    List<User> getUsers();
-
-    List<User> getUsers(List<Integer> idList);
 
     List<fxDatapoint> getFxDataPoints();
 
@@ -22,13 +19,9 @@ public interface IRepository {
 
     //region SETTERS
 
-    void createUser(User user);
-    void updateUser(User user);
-    void createOrUpdateUser(User user);
-
     void createFxDataPoint(fxDatapoint fxdatapoint);
     void updateFxDataPoint(fxDatapoint fxdataPoint);
-    void createOrUpdateFxDataPoint(fxDatapoint fxdataPoint);
+    //void createOrUpdateFxDataPoint(fxDatapoint fxdataPoint);
 
     //endregion
 }

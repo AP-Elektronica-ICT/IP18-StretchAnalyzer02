@@ -109,28 +109,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Login with" />
+                android:text="Login with"
+                android:paddingLeft="10dp"/>
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/imgFB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/facebook"
+                android:scaleType="fitCenter"
+                android:background="#FFFFFF"/>
 
             <ImageButton
                 android:id="@+id/imageButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/googleplus"
+                android:scaleType="fitCenter"
+                android:background="#FFFFFF"/>
 
             <ImageButton
                 android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/linkedin"
+                android:scaleType="fitCenter"
+                android:background="#FFFFFF"/>
         </LinearLayout>
 
     </LinearLayout>

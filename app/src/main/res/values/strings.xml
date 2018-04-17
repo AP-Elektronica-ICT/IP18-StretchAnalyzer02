@@ -10,4 +10,5 @@
     <string name="pic2">pic2</string>
     <string name="pic1">pic1</string>
     <string name="start_now">START NOW!</string>
+    <string name="log_out">Log out</string>
 </resources>

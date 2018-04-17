@@ -11,4 +11,8 @@
     <string name="pic1">pic1</string>
     <string name="start_now">START NOW!</string>
     <string name="log_out">Log out</string>
+    <string name="set_date">Set Date</string>
+    <string name="enddate">Select a End Date:</string>
+    <string name="startdate">Select a Start Date:</string>
+    <string name="show_graph">Show Graph</string>
 </resources>

@@ -4,6 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textviewBeginDate"
+            android:text="@string/startdate"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/textviewEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/enddate"
+            android:gravity="center"
+            android:textSize="15dp"/>
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,4 +40,10 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/btnShowHistoryGraph"
+        android:text="@string/show_graph"
+        android:onClick="OnClickShowHistoryGraph"/>
 </LinearLayout>

@@ -25,8 +25,10 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import be.eaict.stretchalyzer2.DOM.GlobalData;
 import be.eaict.stretchalyzer2.DOM.fxDatapoint;
@@ -48,6 +50,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private int mSec;
     private double angle;
     DatabaseReference databaseFXDatapoint;
+    List<Double> angles = new ArrayList<>();
 
     //oncreate method
     @Override
@@ -152,6 +155,12 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private void addDatapoints() {
         //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
         series.appendData( new DataPoint( mSec += 50, angle ), true, 12000 );
+
+        if(Double.isNaN(angle)) {
+            angle = 0;
+        }
+        angles.add( angle );
+
     }
 
     //sensorEventlistener override method
@@ -185,12 +194,11 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private void SaveToDatabase() {
         String  id = databaseFXDatapoint.push().getKey();
         int timestamp = 0;
-        int fxPoint = 0;
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         String datum = df.format(c);
 
-        fxDatapoint datapoint = new fxDatapoint(id, timestamp, fxPoint, datum, GlobalData.currentUser.getEmail());
+        fxDatapoint datapoint = new fxDatapoint(id, timestamp, angles, datum, GlobalData.currentUser.getEmail());
         databaseFXDatapoint.child(id).setValue( datapoint );
     }
 

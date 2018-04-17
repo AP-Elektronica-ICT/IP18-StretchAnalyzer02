@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Kevin-Laptop on 24/03/2018.
@@ -12,15 +13,16 @@ import java.util.Date;
 public class fxDatapoint {
     private String id;
     private int timestamp;
-    private int fxPoint;
+    private List<Double> angles;
     private String datum;
     String user;
 
 
-    public fxDatapoint(String id, int timestamp, int fxPoint, String datum, String user) {
+
+    public fxDatapoint(String id, int timestamp, List<Double> angles, String datum, String user) {
         this.id = id;
         this.timestamp = timestamp;
-        this.fxPoint = fxPoint;
+        this.angles = angles;
         this.datum = datum;
         this.user = user;
     }
@@ -41,12 +43,12 @@ public class fxDatapoint {
         this.timestamp = timestamp;
     }
 
-    public int getFxPoint() {
-        return fxPoint;
+    public List<Double> getAngles() {
+        return angles;
     }
 
-    public void setFxPoint(int fxPoint) {
-        this.fxPoint = fxPoint;
+    public void setAngles(List<Double> angles) {
+        this.angles = angles;
     }
 
     public String getDatum() {

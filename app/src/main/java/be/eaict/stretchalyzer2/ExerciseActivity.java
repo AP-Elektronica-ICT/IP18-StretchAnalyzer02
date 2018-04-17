@@ -62,7 +62,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private void createGraphview() {
         // graphvieuw aanmaken
         GraphView graph = (GraphView) findViewById(R.id.graph2);
-        series = new LineGraphSeries<>();
+        series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
 
         //vertical axsis title

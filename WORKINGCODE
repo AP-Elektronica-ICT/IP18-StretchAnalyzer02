@@ -1,7 +1,10 @@
 #include <Wire.h>
 #include <math.h>
 #include <SoftwareSerial.h>
-SoftwareSerial BT(10, 11);
+SoftwareSerial BT(12, 11);
+
+//BT TX D12
+//BT RX D11
 
 #define CTRL_REG1 0x20
 #define CTRL_REG2 0x21
@@ -37,6 +40,7 @@ double  pieninkulma = 0;
 double  SUURIN = 0;
 double  PIENIN = 0;
 
+char a;
 
 
 
@@ -226,7 +230,7 @@ void setup()
 {
 
   Wire.begin();
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   Serial.println("starting up L3G4200D");
   setupL3G4200D(2000); // Configure L3G4200  - 250, 500 or 2000 deg/sec
@@ -267,24 +271,47 @@ void loop ()
     kiihtyvyys_z = 0.1353 * sensorValue2 - 49.143;
     kiihtyvyys_z = constrain(kiihtyvyys_z, -9.81, 9.81);  
 
+ a=(BT.read());
 
-if (edellkiiht > kiihtyvyys_x + 1.5 || edellkiiht < kiihtyvyys_x - 1.5)  //tilan tarkistus
+  if (BT.available())
+   {
+
+    if (a=='?')
     {
-  getTila(); 
-    }   
+    BT.println("1 horizontal, 2 vertical, 0 disable, ? this again");
+    }
 
-getTaso();    
+   if (a=='1')
+    {
+     BT.println("Vertical");
 
-if(ylataso == 1)
-  {
-  getMaksimi();
+        if (edellkiiht > kiihtyvyys_x + 1.5 || edellkiiht < kiihtyvyys_x - 1.5)  //tilan tarkistus
+            {
+          getTila(); 
+            }   
+        
+        getTaso();    
+        
+        if(ylataso == 1)
+          {
+          getMaksimi();
+          
+          }
+        
+        if(alataso == 1) 
+          {
+          getMinimi();
+          }
+
+    }
+
+   if (a=='0')
+    {
+      BT.println ("disabled");
+    }
+    
+  }
   
-  }
-
-if(alataso == 1) 
-  {
-  getMinimi();
-  }
 /*
   Serial.print(aika);
   Serial.print("\t");

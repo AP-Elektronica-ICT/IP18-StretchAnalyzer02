@@ -285,14 +285,14 @@ void loop ()
 
 
 
-  acceleration_x = 0.1438 * sensorValue0 - 51.705;        //accelerations
-  acceleration_x = constrain(acceleration_x, -9.81, 9.81);
+  acceleration_x = 0.1374 * sensorValue0  - 49.026;        //accelerations 
+  //acceleration_x = constrain(acceleration_x, -9.81, 9.81);
 
-  acceleration_y = 0.1344 * sensorValue1 - 48.285;
-  acceleration_y = constrain(acceleration_y, -9.81, 9.81);
+  acceleration_y = 0.1324 * sensorValue1 - 47.71;        //0.1324x - 47.71
+  //acceleration_y = constrain(acceleration_y, -9.81, 9.81);
 
-  acceleration_z = 0.1353 * sensorValue2 - 49.143;
-  acceleration_z = constrain(acceleration_z, -9.81, 9.81);
+  acceleration_z = 0.1341 * sensorValue2 - 49.224;
+ // acceleration_z = constrain(acceleration_z, -9.81, 9.81);
 
   a = (BT.read());
 

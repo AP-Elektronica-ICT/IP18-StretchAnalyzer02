@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/googleplus"
+                app:srcCompat="@drawable/google"
                 android:scaleType="fitCenter"
                 android:background="#FFFFFF"/>
 
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/linkedin"
+                app:srcCompat="@drawable/twitter"
                 android:scaleType="fitCenter"
                 android:background="#FFFFFF"/>
         </LinearLayout>

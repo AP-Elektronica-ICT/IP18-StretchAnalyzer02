@@ -1,6 +1,7 @@
 package be.eaict.stretchalyzer2;
 
 import android.app.DatePickerDialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,11 +46,9 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         timePicker();
         createGraph();
-
-
-
     }
 
     // timepicker

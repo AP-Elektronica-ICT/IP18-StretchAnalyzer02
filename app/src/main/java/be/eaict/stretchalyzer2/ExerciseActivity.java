@@ -2,6 +2,7 @@ package be.eaict.stretchalyzer2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -62,6 +63,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_exercise );
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         createAccelerometer();
         createGraphview();
 

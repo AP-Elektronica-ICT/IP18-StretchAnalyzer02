@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -89,6 +90,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_home );
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseFXDatapoint = fbrepo.instantiate();
         readData();
         createGraph();
@@ -144,6 +146,23 @@ public class HomeActivity extends AppCompatActivity {
     //Graph Method
     public void createGraph() {
 
+        //data uitlezen uit text files (graph)
+        try {
+            InputStream streamMs = getAssets().open( "ms.txt" );
+            InputStream streamAngle = getAssets().open( "angle.txt" );
+
+            BufferedReader readerMs = new BufferedReader( new InputStreamReader( streamMs ) );
+            BufferedReader readerAngle = new BufferedReader( new InputStreamReader( streamAngle ) );
+
+            //lijn per lijn nakijken en in array plaatsen
+            while ((numberMs = readerMs.readLine()) != null)
+                mSec.add( numberMs );
+            while ((numberAngle = readerAngle.readLine()) != null)
+                angle.add( numberAngle );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //graphvieuw aanmaken
         GraphView graph = findViewById( R.id.graph );
 
@@ -194,7 +213,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-
         // data toevoegen aan graph
         graph.removeAllSeries();
         graph.addSeries( series );
@@ -219,10 +237,10 @@ public class HomeActivity extends AppCompatActivity {
         //miliseconds onzichtbaar
         graph.getGridLabelRenderer().setHorizontalLabelsVisible( false );
 
-        // vieuwport waarde tussen 200 en - 200 y-as
+        // vieuwport waarde tussen 180 en - 180 y-as
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( -200 );
-        graph.getViewport().setMaxY( 200 );
+        graph.getViewport().setMinY( -180 );
+        graph.getViewport().setMaxY( 180 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
@@ -234,8 +252,8 @@ public class HomeActivity extends AppCompatActivity {
         graph.getViewport().setScalableY( true );
 
         //title grafiek
-        graph.setTitle( "24 Hour Activity Feed" );
-        graph.setTitleTextSize( 50 );
+        graph.setTitle( "Latest Stretchfeedback" );
+        graph.setTitleTextSize( 60 );
         graph.setTitleColor( Color.BLACK );
 
         //layout data

@@ -14,7 +14,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,114 +25,55 @@ import java.util.List;
  * Created by Kevin-Laptop on 1/03/2018.
  */
 
-public class FBRepository implements IRepository {
+public class FBRepository {
+    DatabaseReference databaseFXDatapoint;
+    List<Double> angles = new ArrayList<>();
+    List<fxDatapoint> datapointList = new ArrayList<>();
+    Boolean canceled;
 
-    private static FBRepository repo = null;
-    protected HashMap<Integer, fxDatapoint> fxDataPointCache;
-    protected Integer nextfxDataPointId;
-
-    public static FBRepository getInstance() {
-        if (repo == null) {
-            repo = new FBRepository();
-        }
-        return repo;
+    public DatabaseReference instantiate(){
+        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference( "fxdatapoint" );
+        return databaseFXDatapoint;
     }
 
-    public FBRepository() {
-        fxDataPointCache = new HashMap<>();
-        nextfxDataPointId = 0;
+    public void SaveToDatabase(int mSec, List<Double> angles) {
+        String id = databaseFXDatapoint.push().getKey();
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MMM-yyyy HH:mm:ss" );
+        String datum = df.format( c );
 
-        FirebaseDatabase fbdb = FirebaseDatabase.getInstance();
+        fxDatapoint datapoint = new fxDatapoint( id, mSec, angles, datum, GlobalData.currentUser.getEmail() );
+        databaseFXDatapoint.child( id ).setValue( datapoint );
+    }
 
 
-        //fill fxDataPointCache
-        final DatabaseReference fxDataPointRef = fbdb.getReference("fxDataPoint");
-        fxDataPointRef.addListenerForSingleValueEvent( new ValueEventListener() {
+    public List<fxDatapoint> ReadFromDatabase() {
+        // Read from the database
+        databaseFXDatapoint.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snap: dataSnapshot.getChildren()){
-                    fxDataPointCache.put(Integer.valueOf(snap.getKey()), snap.getValue(fxDatapoint.class));
+
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                for (DataSnapshot child : children) {
+                    fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
+                    datapointList.add( retDatapoint );
                 }
+                canceled = false;
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "database", "Failed to read data.", error.toException() );
+                canceled = true;
             }
         } );
-
-        //add listener to update fxDataPointCache on change
-        fxDataPointRef.addChildEventListener( new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Integer id = Integer.valueOf( dataSnapshot.getKey());
-                FBRepository.getInstance().fxDataPointCache.put( id, dataSnapshot.getValue(fxDatapoint.class));
-                if(id>=nextfxDataPointId){
-                    nextfxDataPointId = id+1;
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                FBRepository.getInstance().fxDataPointCache.put(
-                        Integer.valueOf( dataSnapshot.getKey()),
-                        dataSnapshot.getValue(fxDatapoint.class));
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                FBRepository.getInstance().fxDataPointCache.remove( Integer.valueOf(dataSnapshot.getKey()));
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        } );
-    }
-
-    //get fxDataPoint by ID
-    public fxDatapoint getFxDataPoint(int id){
-        return fxDataPointCache.get(id);
-    }
-
-    //get all fxDataPoints
-    @Override
-    public List<fxDatapoint> getFxDataPoints(){
-        return new ArrayList<>( fxDataPointCache.values() );
-    }
-
-    //get fxDatapoints per date
-    @Override
-    public List<fxDatapoint> getFxDataPoints(Date datum){
-        ArrayList<fxDatapoint> pointList = new ArrayList<>();
-        pointList.add(fxDataPointCache.get(datum));
-        return pointList;
-    }
-
-    public void createFxDataPoint(fxDatapoint fxdatapoint){
-        //createOrUpdateFxDataPoint(fxdatapoint);
-    }
-
-    public void updateFxDataPoint(fxDatapoint fxdatapoint){
-        //createOrUpdateFxDataPoint(fxdatapoint);
-    }
-/*
-    public void createOrUpdateFxDataPoint(fxDatapoint fxdataPoint){
-        if(fxdataPoint.getId() == "-1"){
-            fxdataPoint.setId( nextfxDataPointId );
-            nextfxDataPointId++;
-            fxDataPointCache.put( fxdataPoint.getId(), fxdataPoint );
+        if(canceled){
+            return null;
         }
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("FxDataPoint");
-        ref.child( Integer.toString( fxdataPoint.getId())).setValue(fxdataPoint);
+        else{
+            return datapointList;
+        }
     }
-*/
-
-
 }

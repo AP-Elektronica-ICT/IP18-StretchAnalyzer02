@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import be.eaict.stretchalyzer2.DOM.FBRepository;
 import be.eaict.stretchalyzer2.DOM.GlobalData;
 import be.eaict.stretchalyzer2.DOM.fxDatapoint;
 
@@ -54,7 +55,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     //database declarations
     DatabaseReference databaseFXDatapoint;
     List<Double> angles = new ArrayList<>();
-    List<fxDatapoint> datapointList = new ArrayList<>();
+    FBRepository fbrepo = new FBRepository();
 
     //oncreate method
     @Override
@@ -64,7 +65,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         createAccelerometer();
         createGraphview();
 
-        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference( "fxdatapoint" );
+
+        databaseFXDatapoint = fbrepo.instantiate();
 
     }
 
@@ -189,43 +191,11 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
     //terug knop
     public void onClickToHome(View view) {
-        SaveToDatabase();
+        fbrepo.SaveToDatabase(mSec, angles);
         super.onBackPressed();
     }
 
-    private void SaveToDatabase() {
-        String id = databaseFXDatapoint.push().getKey();
-        int timestamp = 0;
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat( "dd-MMM-yyyy HH:mm:ss" );
-        String datum = df.format( c );
 
-        fxDatapoint datapoint = new fxDatapoint( id, timestamp, angles, datum, GlobalData.currentUser.getEmail() );
-        databaseFXDatapoint.child( id ).setValue( datapoint );
-    }
-
-
-    private void ReadFromDatabase() {
-        // Read from the database
-        databaseFXDatapoint.addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                for (DataSnapshot child : children) {
-                    fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
-                    datapointList.add( retDatapoint );
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w( "database", "Failed to read data.", error.toException() );
-            }
-        } );
-    }
 
 
 }

@@ -8,4 +8,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class GlobalData {
     public static FirebaseUser currentUser;
+
+    public static FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(FirebaseUser currentUser) {
+        GlobalData.currentUser = currentUser;
+    }
 }

@@ -12,19 +12,22 @@ import java.util.List;
 
 public class fxDatapoint {
     private String id;
-    private int timestamp;
+    private double timestamp;
     private List<Double> angles;
     private String datum;
     String user;
 
 
 
-    public fxDatapoint(String id, int timestamp, List<Double> angles, String datum, String user) {
+    public fxDatapoint(String id, double timestamp, List<Double> angles, String datum, String user) {
         this.id = id;
         this.timestamp = timestamp;
         this.angles = angles;
         this.datum = datum;
         this.user = user;
+    }
+
+    public fxDatapoint() {
     }
 
     public String getId() {
@@ -35,11 +38,11 @@ public class fxDatapoint {
         this.id = id;
     }
 
-    public int getTimestamp() {
+    public double getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(double timestamp) {
         this.timestamp = timestamp;
     }
 

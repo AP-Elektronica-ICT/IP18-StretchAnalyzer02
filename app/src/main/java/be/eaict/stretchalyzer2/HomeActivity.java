@@ -17,6 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Handler;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
@@ -27,11 +33,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import be.eaict.stretchalyzer2.DOM.FBRepository;
+import be.eaict.stretchalyzer2.DOM.GlobalData;
+import be.eaict.stretchalyzer2.DOM.fxDatapoint;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -42,17 +57,17 @@ public class HomeActivity extends AppCompatActivity {
     private String numberAngle;
     private ArrayList<String> angle = new ArrayList<>();
     private ArrayList<String> mSec = new ArrayList<>();
-    private double x,y;
+    private double x, y;
 
     //  private final String DEVICE_NAME="MyBTBee";
-    private final String DEVICE_ADDRESS="20:13:10:15:33:66";
-    private final UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
+    private final String DEVICE_ADDRESS = "20:13:10:15:33:66";
+    private final UUID PORT_UUID = UUID.fromString( "00001101-0000-1000-8000-00805f9b34fb" );//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
     private OutputStream outputStream;
     private InputStream inputStream;
     TextView textView;
-    boolean deviceConnected=false;
+    boolean deviceConnected = false;
     Thread thread;
     byte buffer[];
     int bufferPosition;
@@ -64,11 +79,18 @@ public class HomeActivity extends AppCompatActivity {
     private TextToSpeech tts;
     private Button btnStart;
     private String text;
+    private List<fxDatapoint> datapoints = new ArrayList<>();
+    FBRepository fbrepo = new FBRepository();
+    DatabaseReference databaseFXDatapoint;
+    final List<fxDatapoint> datapointList = new ArrayList<>();
+    Boolean canceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_home );
+        databaseFXDatapoint = fbrepo.instantiate();
+        readData();
         createGraph();
         startRepeatingTask();
         ctx = this.getApplicationContext();
@@ -76,13 +98,13 @@ public class HomeActivity extends AppCompatActivity {
         text = "Start exercising!";
 
 
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+        tts = new TextToSpeech( this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                createTts(status);
+                createTts( status );
 
             }
-        });
+        } );
 
         btnStart.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -98,105 +120,160 @@ public class HomeActivity extends AppCompatActivity {
 
     //Text-to-Speech
     private void createTts(int status) {
-        Locale locale = new Locale("en", "IN"  );
+        Locale locale = new Locale( "en", "IN" );
         if (status == TextToSpeech.SUCCESS) {
-            int result = tts.setLanguage(locale);
+            int result = tts.setLanguage( locale );
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", "This Language is not supported");
+                Log.e( "TTS", "This Language is not supported" );
             }
 
         } else {
-            Log.e("TTS", "Initilization Failed!");
+            Log.e( "TTS", "Initilization Failed!" );
         }
     }
 
 
-    private void speak(String text){
+    private void speak(String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }else{
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+            tts.speak( text, TextToSpeech.QUEUE_FLUSH, null, null );
+        } else {
+            tts.speak( text, TextToSpeech.QUEUE_FLUSH, null );
         }
     }
 
     //Graph Method
-    public void createGraph(){
-
-        //data uitlezen uit text files (graph)
-        try {
-            InputStream streamMs = getAssets().open("ms.txt");
-            InputStream streamAngle = getAssets().open("angle.txt");
-
-            BufferedReader readerMs= new BufferedReader(new InputStreamReader(streamMs));
-            BufferedReader readerAngle = new BufferedReader(new InputStreamReader(streamAngle));
-
-            //lijn per lijn nakijken en in array plaatsen
-            while((numberMs = readerMs.readLine()) != null)
-                mSec.add(numberMs);
-            while((numberAngle= readerAngle.readLine()) != null)
-                angle.add(numberAngle);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void createGraph() {
 
         //graphvieuw aanmaken
-        GraphView graph =  findViewById(R.id.graph);
+        GraphView graph = findViewById( R.id.graph );
 
-        //data aan graph toevoegen
+
+//data aan graph toevoegen
+
         series = new LineGraphSeries<DataPoint>();
-        for (int i = 0; i<mSec.size(); i++){
-            x = Double.parseDouble(mSec.get(i));
-            y = Double.parseDouble(angle.get(i));
-            series.appendData(new DataPoint(x,y),true,mSec.size());
+
+        Date currentDate, previousDate = null, newestDate = null, usedDate = null;
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+
+        for (fxDatapoint punt : datapointList) {
+            try {
+                currentDate = df.parse( punt.getDatum() );
+                if (previousDate == null) {
+                    newestDate = currentDate;
+                    previousDate = currentDate;
+                } else {
+                    if (currentDate.after( previousDate )) {
+                        newestDate = currentDate;
+                        previousDate = currentDate;
+                    }else if(currentDate.before( previousDate )){
+
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
 
+        for (fxDatapoint punt : datapointList) {
+            try{
+                usedDate = df.parse( punt.getDatum() );
+            }
+            catch (ParseException e){
+                e.printStackTrace();
+            }
+
+            if(usedDate.equals( newestDate )){
+                x = -50;
+                double total = punt.getTimestamp();
+                for (Double angle : punt.getAngles()) {
+                    x += total / punt.getAngles().size();
+                    y = angle;
+                    series.appendData( new DataPoint( x, y ), true, punt.getAngles().size() );
+                }
+            }
+        }
+
+
         // data toevoegen aan graph
-        graph.addSeries(series);
+        graph.removeAllSeries();
+        graph.addSeries( series );
 
         //vertical axsis title
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Angle");
-        graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLUE);
-        graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(40);
+        graph.getGridLabelRenderer().setVerticalAxisTitle( "Angle" );
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor( Color.BLUE );
+        graph.getGridLabelRenderer().setVerticalAxisTitleTextSize( 40 );
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("mSec");
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLUE);
-        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(40);
+        graph.getGridLabelRenderer().setHorizontalAxisTitle( "mSec" );
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
+        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 
         //layout grafiek
-        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
-        graph.getGridLabelRenderer().setHighlightZeroLines(true);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
-        graph.getViewport().setBackgroundColor(Color.WHITE);
+        graph.getGridLabelRenderer().setGridColor( Color.BLACK );
+        graph.getGridLabelRenderer().setHighlightZeroLines( true );
+        graph.getGridLabelRenderer().setVerticalLabelsColor( Color.BLACK );
+        graph.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.HORIZONTAL );
+        graph.getViewport().setBackgroundColor( Color.WHITE );
 
         //miliseconds onzichtbaar
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible( false );
 
-        // vieuwport waarde tussen 180 en - 180 y-as
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-180);
-        graph.getViewport().setMaxY(180);
+        // vieuwport waarde tussen 200 en - 200 y-as
+        graph.getViewport().setYAxisBoundsManual( true );
+        graph.getViewport().setMinY( -200 );
+        graph.getViewport().setMaxY( 200 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(Double.parseDouble(Collections.max(mSec)));
+        graph.getViewport().setXAxisBoundsManual( true );
+        graph.getViewport().setMinX( 0 );
+        graph.getViewport().setMaxX( Double.parseDouble( Collections.max( mSec ) ) );
 
         //scaling en scrolling
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
+        graph.getViewport().setScalable( true );
+        graph.getViewport().setScalableY( true );
 
         //title grafiek
-        graph.setTitle("24 Hour Activity Feed");
-        graph.setTitleTextSize(50);
-        graph.setTitleColor(Color.BLACK);
+        graph.setTitle( "24 Hour Activity Feed" );
+        graph.setTitleTextSize( 50 );
+        graph.setTitleColor( Color.BLACK );
 
         //layout data
-        series.setColor(Color.RED);
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(6);
-        series.setThickness(4);
+        series.setColor( Color.RED );
+        series.setDrawDataPoints( true );
+        series.setDataPointsRadius( 6 );
+        series.setThickness( 4 );
+    }
+
+    public void readData() {
+        // Read from the database
+        databaseFXDatapoint.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                Boolean test = false;
+
+                for (DataSnapshot child : children) {
+                    fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
+
+                    FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String current = CurrentUser.getUid();
+                    String testuser = retDatapoint.getId();
+                    if (testuser.equals( current )) {
+                        test = true;
+                        datapointList.add( retDatapoint );
+                    }
+
+                }
+                createGraph();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "database", "Failed to read data.", error.toException() );
+            }
+        } );
     }
 
     @Override
@@ -214,13 +291,13 @@ public class HomeActivity extends AppCompatActivity {
     Runnable mDataChecker = new Runnable() {
         @Override
         public void run() {  //Repeating task 
-            try{
+            try {
                 try {
-                    data = new String(BluetoothManager.getInstance(ctx).buffer, StandardCharsets.UTF_8);
+                    data = new String( BluetoothManager.getInstance( ctx ).buffer, StandardCharsets.UTF_8 );
                 } finally {
-                    mHandler.postDelayed(mDataChecker, mInterval);
+                    mHandler.postDelayed( mDataChecker, mInterval );
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
 
             }
         }
@@ -231,61 +308,79 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     void stopRepeatingTask() {
-        mHandler.removeCallbacks(mDataChecker);
+        mHandler.removeCallbacks( mDataChecker );
     }
 
 
     //OnClickListener naar settings activity
-    public void onClickSettings(View view){
+    public void onClickSettings(View view) {
         openApplicationSettingsActivity();
     }
 
 
     //Intent method naar exercise activity
     private void openExerciseActivity() {
-        Intent intent = new Intent(HomeActivity.this, ExerciseActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent( HomeActivity.this, ExerciseActivity.class );
+        startActivity( intent );
     }
 
     //Intent method naar settings activity
     private void openApplicationSettingsActivity() {
-        Intent intent = new Intent(HomeActivity.this, Settings.class);
-        startActivity(intent);
+        Intent intent = new Intent( HomeActivity.this, Settings.class );
+        startActivity( intent );
     }
 
     //android lifecycle
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        moveTaskToBack( true );
     }
 
     //historyActivity intent
     public void onClickHistory(View view) {
-        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent( HomeActivity.this, HistoryActivity.class );
+        startActivity( intent );
     }
+
     //AccountActivity intent
     public void onClickAccount(View view) {
-        Intent intent = new Intent(HomeActivity.this, AccountActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent( HomeActivity.this, AccountActivity.class );
+        startActivity( intent );
     }
 
     public void onClickNextExercise(View view) {
-        ImageView img,img2;
-        img  =  findViewById(R.id.imageView);
-        img2 =  findViewById(R.id.imageView2);
-        img.setImageResource(R.drawable.pic1);
-        img2.setImageResource(R.drawable.pic2);
+        ImageView img, img2;
+        img = findViewById( R.id.imageView );
+        img2 = findViewById( R.id.imageView2 );
+        img.setImageResource( R.drawable.pic1 );
+        img2.setImageResource( R.drawable.pic2 );
 
     }
 
     public void onClickSelectedExercise(View view) {
-        ImageView img,img2;
-        img  = findViewById(R.id.imageView);
-        img2 = findViewById(R.id.imageView2);
-        img.setImageResource(R.drawable.pic2);
-        img2.setImageResource(R.drawable.pic1);
+        ImageView img, img2;
+        img = findViewById( R.id.imageView );
+        img2 = findViewById( R.id.imageView2 );
+        img.setImageResource( R.drawable.pic2 );
+        img2.setImageResource( R.drawable.pic1 );
     }
 
+    public List<fxDatapoint> filterTodaysData() {
+        List<fxDatapoint> todaysPoints = new ArrayList<>();
+        datapoints = fbrepo.ReadFromDatabase();
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MMM-yyyy" );
+        String today = df.format( c );
+        String pointDatum;
+        for (fxDatapoint point : datapoints) {
+            pointDatum = df.format( point.getDatum() );
+            if (pointDatum == today) {
+                todaysPoints.add( point );
+            }
+        }
+
+        if (todaysPoints.isEmpty()) return null;
+        return todaysPoints;
+    }
 
 }

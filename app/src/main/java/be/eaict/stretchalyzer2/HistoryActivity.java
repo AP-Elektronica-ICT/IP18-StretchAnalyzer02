@@ -171,9 +171,6 @@ public class HistoryActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
-
-
     public void OnClickStart(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -184,7 +181,6 @@ public class HistoryActivity extends AppCompatActivity {
         },sYear,sMonth,sDay);
         datePickerDialog.show();
     }
-
 
 }
 

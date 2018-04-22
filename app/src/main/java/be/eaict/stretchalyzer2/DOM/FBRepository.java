@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,17 +33,18 @@ public class FBRepository {
     Boolean canceled;
 
     public DatabaseReference instantiate(){
-        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference( "fxdatapoint" );
+        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference( ).child("fxdatapoint" );
         return databaseFXDatapoint;
     }
 
     public void SaveToDatabase(int mSec, List<Double> angles) {
         String id = databaseFXDatapoint.push().getKey();
+        String uid = GlobalData.currentUser.getUid();
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat( "dd-MMM-yyyy HH:mm:ss" );
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
         String datum = df.format( c );
 
-        fxDatapoint datapoint = new fxDatapoint( id, mSec, angles, datum, GlobalData.currentUser.getEmail() );
+        fxDatapoint datapoint = new fxDatapoint( uid, mSec, angles, datum, GlobalData.currentUser.getEmail() );
         databaseFXDatapoint.child( id ).setValue( datapoint );
     }
 
@@ -52,12 +54,12 @@ public class FBRepository {
         databaseFXDatapoint.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
 
                 for (DataSnapshot child : children) {
                     fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
-                    datapointList.add( retDatapoint );
+
+                    if(retDatapoint.getId() == GlobalData.currentUser.getUid()) datapointList.add( retDatapoint );
                 }
                 canceled = false;
             }

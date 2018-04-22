@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView( R.layout.activity_main );
 
         FirebaseApp.initializeApp(this);
-        FBRepository.getInstance();
 
 
         mAuth = FirebaseAuth.getInstance();

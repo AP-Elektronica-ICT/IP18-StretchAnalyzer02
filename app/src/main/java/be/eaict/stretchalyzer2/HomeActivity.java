@@ -269,7 +269,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                Boolean test = false;
 
                 for (DataSnapshot child : children) {
                     fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
@@ -278,7 +277,6 @@ public class HomeActivity extends AppCompatActivity {
                     String current = CurrentUser.getUid();
                     String testuser = retDatapoint.getId();
                     if (testuser.equals( current )) {
-                        test = true;
                         datapointList.add( retDatapoint );
                     }
 
@@ -328,7 +326,6 @@ public class HomeActivity extends AppCompatActivity {
     void stopRepeatingTask() {
         mHandler.removeCallbacks( mDataChecker );
     }
-
 
     //OnClickListener naar settings activity
     public void onClickSettings(View view) {

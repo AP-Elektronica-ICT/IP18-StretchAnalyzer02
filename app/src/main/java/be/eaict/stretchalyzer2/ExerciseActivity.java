@@ -50,8 +50,11 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private LineGraphSeries<DataPoint> series;
     private int mSec;
     private double angle;
+
+    //database declarations
     DatabaseReference databaseFXDatapoint;
     List<Double> angles = new ArrayList<>();
+    List<fxDatapoint> datapointList = new ArrayList<>();
 
     //oncreate method
     @Override
@@ -61,10 +64,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         createAccelerometer();
         createGraphview();
 
-        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference("fxdatapoint");
+        databaseFXDatapoint = FirebaseDatabase.getInstance().getReference( "fxdatapoint" );
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseFXDatapoint = database.getReference("fxdatapoint");
     }
 
     //method accelerometer
@@ -157,7 +158,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
         series.appendData( new DataPoint( mSec += 50, angle ), true, 12000 );
 
-        if(Double.isNaN(angle)) {
+        if (Double.isNaN( angle )) {
             angle = 0;
         }
         angles.add( angle );
@@ -193,34 +194,37 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     }
 
     private void SaveToDatabase() {
-        String  id = databaseFXDatapoint.push().getKey();
+        String id = databaseFXDatapoint.push().getKey();
         int timestamp = 0;
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-        String datum = df.format(c);
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MMM-yyyy HH:mm:ss" );
+        String datum = df.format( c );
 
-        fxDatapoint datapoint = new fxDatapoint(id, timestamp, angles, datum, GlobalData.currentUser.getEmail());
-        databaseFXDatapoint.child(id).setValue( datapoint );
+        fxDatapoint datapoint = new fxDatapoint( id, timestamp, angles, datum, GlobalData.currentUser.getEmail() );
+        databaseFXDatapoint.child( id ).setValue( datapoint );
     }
 
 
-    private void ReadFromDatabase(){
+    private void ReadFromDatabase() {
         // Read from the database
-        databaseFXDatapoint.addValueEventListener(new ValueEventListener() {
+        databaseFXDatapoint.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d("database", "Value is: " + value);
+
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                for (DataSnapshot child : children) {
+                    fxDatapoint retDatapoint = child.getValue( fxDatapoint.class );
+                    datapointList.add( retDatapoint );
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("database", "Failed to read value.", error.toException());
+                Log.w( "database", "Failed to read data.", error.toException() );
             }
-        });
+        } );
     }
 
 

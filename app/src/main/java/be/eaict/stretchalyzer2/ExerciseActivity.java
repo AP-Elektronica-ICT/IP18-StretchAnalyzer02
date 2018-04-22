@@ -81,8 +81,6 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         // eventlistener
         sensorManager.registerListener( ExerciseActivity.this, accSensor, SensorManager.SENSOR_DELAY_NORMAL );
 
-        //test textvieuws mag weg nadien
-        yValue = (TextView) findViewById( R.id.yValue );
     }
 
     //method graphview

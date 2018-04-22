@@ -45,9 +45,6 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     //declaration sensor
     Sensor accSensor;
 
-    //declatration test textvieuws mag weg nadien !!!
-    TextView yValue;
-
     // graph declarations
     private LineGraphSeries<DataPoint> series;
     private int mSec;
@@ -178,10 +175,6 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     public void onSensorChanged(SensorEvent sensorEvent) {
         //formule angle acc (werkt niet)
         angle = Math.asin( sensorEvent.values[1] / 9.81 ) / Math.PI * 180;
-
-
-        //test textvieuws mag weg nadien
-        yValue.setText( "Angle :" + angle );
     }
 
     @Override

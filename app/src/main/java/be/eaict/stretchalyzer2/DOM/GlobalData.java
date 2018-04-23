@@ -8,6 +8,16 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class GlobalData {
     public static FirebaseUser currentUser;
+    public static Boolean Sensor = true;
+
+
+    public static Boolean getSensor() {
+        return Sensor;
+    }
+
+    public static void setSensor(Boolean sensor) {
+        Sensor = sensor;
+    }
 
     public static FirebaseUser getCurrentUser() {
         return currentUser;

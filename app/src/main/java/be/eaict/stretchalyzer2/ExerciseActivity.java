@@ -60,7 +60,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_exercise );
-        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         createAccelerometer();
         createGraphview();
 
@@ -126,34 +126,41 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     @Override
     protected void onResume() {
         super.onResume();
-        // simulate real time met thread
-        new Thread( new Runnable() {
 
-            @Override
-            public void run() {
-                //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 50 miliseconden)
-                for (int i = 0; i < 12000; i++) {
-                    runOnUiThread( new Runnable() {
+        if (GlobalData.Sensor) {
 
-                        @Override
-                        public void run() {
-                            addDatapoints();
+
+            // simulate real time met thread
+            new Thread( new Runnable() {
+
+                @Override
+                public void run() {
+                    //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 50 miliseconden)
+                    for (int i = 0; i < 12000; i++) {
+                        runOnUiThread( new Runnable() {
+
+                            @Override
+                            public void run() {
+                                addDatapoints();
+                            }
+                        } );
+
+                        // sleep om de livedata te vertragen tot op ingegeven waarde
+                        try {
+                            Thread.sleep( 50 );
+                        } catch (InterruptedException e) {
+                            // errors
                         }
-                    } );
-
-                    // sleep om de livedata te vertragen tot op ingegeven waarde
-                    try {
-                        Thread.sleep( 50 );
-                    } catch (InterruptedException e) {
-                        // errors
                     }
                 }
-            }
-        } ).start();
+            } ).start();
+
+        }
     }
 
     //datapoints toevoegen aan runnable
     private void addDatapoints() {
+
         //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
         series.appendData( new DataPoint( mSec += 50, angle ), true, 12000 );
 
@@ -184,11 +191,11 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
     //terug knop
     public void onClickToHome(View view) {
-        fbrepo.SaveToDatabase(mSec, angles);
+        if(GlobalData.Sensor){
+            fbrepo.SaveToDatabase( mSec, angles );
+        }
         super.onBackPressed();
     }
-
-
 
 
 }

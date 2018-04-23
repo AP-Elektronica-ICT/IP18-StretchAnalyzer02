@@ -18,4 +18,5 @@
     <string name="startdate2">Start Date:</string>
     <string name="end_date">End Date:</string>
     <string name="_20_reps">20 Reps</string>
+    <string name="hardware_device">Use Sensor data:</string>
 </resources>

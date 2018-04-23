@@ -10,8 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.Calendar;
+
+import be.eaict.stretchalyzer2.DOM.GlobalData;
 
 /**
  * Created by cedric on 25/03/2018.
@@ -23,6 +26,7 @@ public class Settings extends AppCompatActivity {
     private int minute = 0;
     private EditText hourtTemp;
     private EditText minuteTemp;
+    private ToggleButton toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class Settings extends AppCompatActivity {
         hourtTemp = findViewById(R.id.txtHours);
         minuteTemp = findViewById(R.id.txtMinutes);
 
+        toggle = findViewById( R.id.toggleButtonHardware );
+        toggle.setChecked( GlobalData.Sensor );
     }
 
     //setNotification button click
@@ -61,12 +67,14 @@ public class Settings extends AppCompatActivity {
         Toast.makeText(Settings.this,tekst, Toast.LENGTH_LONG).show();
     }
 
-      /*  Spinner inputHours = findViewById(R.id.spinnerHours);
-        Spinner inputMinutes = findViewById(R.id.spinnerMinutes);
-        String[] hours = new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
-        String[] minutes = new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"};
-        ArrayAdapter<String> adapterHours = new ArrayAdapter<>(this,R.layout.activity_settings, hours);
-        ArrayAdapter<String> adapterMinutes = new ArrayAdapter<>(this,R.layout.activity_settings, hours);
-        inputHours.setAdapter(adapterHours);
-        inputMinutes.setAdapter(adapterMinutes);*/
+
+    public void onToggleClicked(View view) {
+        if (toggle.isChecked()) {
+            GlobalData.Sensor = true;
+            Toast.makeText(Settings.this,"Gebruik van sensordata "+String.valueOf(GlobalData.Sensor), Toast.LENGTH_LONG).show();
+        } else {
+            GlobalData.Sensor = false;
+            Toast.makeText(Settings.this,"Gebruik van sensordata "+ String.valueOf(GlobalData.Sensor), Toast.LENGTH_LONG).show();
+        }
+    }
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtExName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="InsertExerciseName" />
+
+        <TextView
+            android:id="@+id/setCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Set X" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph2"
+            android:layout_width="213dp"
+            android:layout_height="201dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="193dp"
+            android:layout_height="250dp"
+            android:background="#FFFFFF"
+            android:src="@drawable/arm1" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reps:" />
+
+    <TextView
+        android:id="@+id/txtShowReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtMAT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max Angle Top:" />
+
+    <TextView
+        android:id="@+id/txtShowMAT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="InsertMAT" />
+
+    <TextView
+        android:id="@+id/txtMAB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max Angle Bottom:" />
+
+    <TextView
+        android:id="@+id/txtShowMAB"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="InsertMAB" />
+
+    <Button
+        android:id="@+id/btnShareSM"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="Share your performance!" />
+
+
+</LinearLayout>

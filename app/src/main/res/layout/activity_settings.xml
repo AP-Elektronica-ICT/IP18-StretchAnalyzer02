@@ -23,28 +23,28 @@
         android:layout_height="68dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/set_time" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_time" />
 
-        <EditText
-            android:id="@+id/txtHours"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="time" />
+            <EditText
+                android:id="@+id/txtHours"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="10"
+                android:inputType="time" />
 
-        <EditText
-            android:id="@+id/txtMinutes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="time" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/txtMinutes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="10"
+                android:inputType="time" />
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,6 +76,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onToggleClicked"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <EditText
+            android:id="@+id/txtCounter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="time"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCounter"
+            android:layout_weight="1"
+            android:text="@string/set_time_counter"
+            android:onClick="onClickCounterSet"/>
     </LinearLayout>
 
 </LinearLayout>

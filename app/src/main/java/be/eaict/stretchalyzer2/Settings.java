@@ -78,4 +78,13 @@ public class Settings extends AppCompatActivity {
             Toast.makeText(Settings.this,"Gebruik van devicedata staat aan ", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void onClickCounterSet(View view) {
+
+        EditText time = (EditText) findViewById(R.id.txtCounter);
+        String value = time.getText().toString();
+        double waarde = Double.parseDouble(value);
+        GlobalData.startTime = (long) (waarde*60000);
+        Toast.makeText(Settings.this,"De Counter is ingesteld op "+value+" minuten",Toast.LENGTH_LONG).show();
+    }
 }

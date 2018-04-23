@@ -26,4 +26,5 @@
     <string name="exercise_screen">Exercise Screen</string>
     <string name="history_screen">History Screen</string>
     <string name="account_settings">Account Settings</string>
+    <string name="set_time_counter">Set Time Counter</string>
 </resources>

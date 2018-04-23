@@ -16,6 +16,8 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:text="@string/_00_00"
             android:textSize="40sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
             android:layout_gravity="center"/>
 
         <LinearLayout
@@ -28,12 +30,14 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:text="@string/sensor"
                 android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="start"/>
 
             <ImageView
                 android:id="@+id/btnbol1"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/groen"
                 android:scaleType="fitCenter" />
         </LinearLayout>
@@ -48,13 +52,14 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:text="@string/device"
                 android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="start"/>
 
             <ImageView
                 android:id="@+id/btnbol2"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="8.5dp"
                 android:background="@drawable/rood"
                 android:scaleType="fitCenter" />
         </LinearLayout>

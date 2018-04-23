@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import be.eaict.stretchalyzer2.DOM.FBRepository;
 import be.eaict.stretchalyzer2.DOM.GlobalData;
@@ -52,6 +54,12 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     private int mSec;
     private double angle;
 
+    //timer
+    private TextView countdown;
+    private CountDownTimer timer;
+
+    private long mTimeLeftInMillis = GlobalData.startTime;
+
     //database declarations
     DatabaseReference databaseFXDatapoint;
     List<Double> angles = new ArrayList<>();
@@ -66,10 +74,35 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         createAccelerometer();
         createGraphview();
         changePics();
-
+        counter();
 
         databaseFXDatapoint = fbrepo.instantiate();
 
+    }
+
+    //timer
+    public void counter(){
+        countdown = findViewById(R.id.countdown);
+        timer = new CountDownTimer(mTimeLeftInMillis,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis= millisUntilFinished;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+    }
+    //update timer text
+    public void updateCountDownText(){
+        int minutes =(int) (mTimeLeftInMillis/1000) /60;
+        int seconds = (int) (mTimeLeftInMillis/1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        countdown.setText(timeLeftFormatted);
     }
 
     //method accelerometer

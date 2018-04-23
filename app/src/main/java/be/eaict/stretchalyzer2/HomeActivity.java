@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -80,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
     private Handler mHandler;
     private Context ctx;
     private TextToSpeech tts;
+    private boolean Bool =false;
     private Button btnStart;
     private String text;
     private List<fxDatapoint> datapoints = new ArrayList<>();
@@ -350,17 +352,20 @@ public class HomeActivity extends AppCompatActivity {
         ImageView img, img2;
         img = findViewById( R.id.imageView );
         img2 = findViewById( R.id.imageView2 );
+        if (Bool==false){
         img.setImageResource( R.drawable.pic1 );
         img2.setImageResource( R.drawable.pic2 );
+        Bool = true;}
+        else{
+            img.setImageResource( R.drawable.pic2 );
+            img2.setImageResource( R.drawable.pic1 );
+            Bool = false;}
 
     }
 
     public void onClickSelectedExercise(View view) {
-        ImageView img, img2;
-        img = findViewById( R.id.imageView );
-        img2 = findViewById( R.id.imageView2 );
-        img.setImageResource( R.drawable.pic2 );
-        img2.setImageResource( R.drawable.pic1 );
+        Toast.makeText(HomeActivity.this,"Dit is de geselecteerde oefening ", Toast.LENGTH_LONG).show();
+
     }
 
     public List<fxDatapoint> filterTodaysData() {

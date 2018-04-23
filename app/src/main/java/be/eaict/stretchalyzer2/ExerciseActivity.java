@@ -13,6 +13,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -63,6 +65,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         createAccelerometer();
         createGraphview();
+        changePics();
 
 
         databaseFXDatapoint = fbrepo.instantiate();
@@ -78,6 +81,20 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         // eventlistener
         sensorManager.registerListener( ExerciseActivity.this, accSensor, SensorManager.SENSOR_DELAY_NORMAL );
 
+    }
+
+    //veranderen van kleur aan de hand van settings met globale variable
+    private void changePics(){
+        ImageView bol1, bol2;
+        bol1 = findViewById( R.id.btnbol1 );
+        bol2 = findViewById( R.id.btnbol2 );
+
+        if (GlobalData.Sensor) {
+            bol1.setImageResource(R.drawable.groen);
+            bol2.setImageResource(R.drawable.rood);
+        }else {
+            bol1.setImageResource(R.drawable.rood);
+            bol2.setImageResource( R.drawable.groen);}
     }
 
     //method graphview
@@ -102,15 +119,15 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
         //miliseconds zichtbaar
         graph.getGridLabelRenderer().setHorizontalLabelsVisible( true );
 
-        // vieuwport waarde tussen 180 en - 180 y-as
+        // vieuwport waarde instellen
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( -180 );
-        graph.getViewport().setMaxY( 180 );
+        graph.getViewport().setMinY(-180);
+        graph.getViewport().setMaxY(150 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
-        graph.getViewport().setMinX( 0 );
-        graph.getViewport().setMaxX( 6000 );
+        graph.getViewport().setMinX( -2500 );
+        graph.getViewport().setMaxX( 2500 );
 
 
         //layout data
@@ -135,7 +152,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
                 @Override
                 public void run() {
-                    //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 100 miliseconden)
+                    //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 50miliseconden)
                     for (int i = 0; i < 12000; i++) {
                         runOnUiThread( new Runnable() {
 
@@ -147,7 +164,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
                         // sleep om de livedata te vertragen tot op ingegeven waarde
                         try {
-                            Thread.sleep( 100);
+                            Thread.sleep( 50);
                         } catch (InterruptedException e) {
                             // errors
                         }
@@ -161,8 +178,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     //datapoints toevoegen aan runnable
     private void addDatapoints() {
 
-        //(12000 komt van 10 minuten * 60 seconden * 20(om de 100 miliseconden)
-        series.appendData( new DataPoint( mSec += 100, angle ), true, 12000 );
+        //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
+        series.appendData( new DataPoint( mSec += 50, angle ), true, 12000 );
 
         if (Double.isNaN( angle )) {
             angle = 0;

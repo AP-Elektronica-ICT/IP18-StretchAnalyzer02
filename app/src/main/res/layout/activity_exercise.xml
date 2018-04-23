@@ -9,26 +9,55 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/count"
-            android:textSize="30sp"
-            android:layout_gravity="center"/>
 
         <TextView
-            android:id="@+id/counter"
+            android:id="@+id/countdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_20_reps"
+            android:text="@string/_00_00"
             android:textSize="40sp"
             android:layout_gravity="center"/>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sensor"
+                android:textSize="20sp"
+                android:layout_gravity="start"/>
+
+            <ImageView
+                android:id="@+id/btnbol1"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/groen"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device"
+                android:textSize="20sp"
+                android:layout_gravity="start"/>
+
+            <ImageView
+                android:id="@+id/btnbol2"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/rood"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -40,9 +69,9 @@ android:orientation="vertical">
 
         <pl.droidsonroids.gif.GifImageView
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:src="@drawable/arm1"
-            android:background="#FFFFFF"/>
+            android:layout_height="150dp"
+            android:background="#FFFFFF"
+            android:src="@drawable/arm1" />
     </LinearLayout>
 
 

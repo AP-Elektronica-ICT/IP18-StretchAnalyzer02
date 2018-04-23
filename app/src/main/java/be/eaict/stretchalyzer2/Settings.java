@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -71,10 +72,10 @@ public class Settings extends AppCompatActivity {
     public void onToggleClicked(View view) {
         if (toggle.isChecked()) {
             GlobalData.Sensor = true;
-            Toast.makeText(Settings.this,"Gebruik van sensordata "+String.valueOf(GlobalData.Sensor), Toast.LENGTH_LONG).show();
+            Toast.makeText(Settings.this,"Gebruik van sensordata staat aan", Toast.LENGTH_LONG).show();
         } else {
             GlobalData.Sensor = false;
-            Toast.makeText(Settings.this,"Gebruik van sensordata "+ String.valueOf(GlobalData.Sensor), Toast.LENGTH_LONG).show();
+            Toast.makeText(Settings.this,"Gebruik van devicedata staat aan ", Toast.LENGTH_LONG).show();
         }
     }
 }

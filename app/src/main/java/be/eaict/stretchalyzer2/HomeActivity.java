@@ -84,7 +84,6 @@ public class HomeActivity extends AppCompatActivity {
     FBRepository fbrepo = new FBRepository();
     DatabaseReference databaseFXDatapoint;
     final List<fxDatapoint> datapointList = new ArrayList<>();
-    Boolean canceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -179,9 +179,9 @@ public class HistoryActivity extends AppCompatActivity {
         setPercentages();
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle( "Date" );
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
-        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitle( "Date" );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor(Color.BLACK);
@@ -192,7 +192,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         //waarde labels laten zien of niet
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
 
         // vieuwport instellen

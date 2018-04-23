@@ -23,4 +23,7 @@
     <string name="sensordata">Sensordata :</string>
     <string name="sensor">Sensor: </string>
     <string name="device">Device: </string>
+    <string name="exercise_screen">Exercise Screen</string>
+    <string name="history_screen">History Screen</string>
+    <string name="account_settings">Account Settings</string>
 </resources>

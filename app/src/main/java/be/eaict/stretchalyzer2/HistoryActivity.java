@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import be.eaict.stretchalyzer2.DOM.FBRepository;
@@ -49,22 +50,26 @@ public class HistoryActivity extends AppCompatActivity {
     private String numberAngle;
     private ArrayList<String> angle = new ArrayList<>();
     private ArrayList<String> mSec = new ArrayList<>();
-    private double x,y;
+    private double x, y;
     final List<fxDatapoint> datapointList = new ArrayList<>();
+    private List<Double> percentageMax = new ArrayList<>();
+    private List<Double> percentageMin = new ArrayList<>();
     DatabaseReference databaseFXDatapoint;
     FBRepository fbrepo = new FBRepository();
 
-    //declaration timepicker dialog
-    TextView startDate,endDate;
-    Calendar cal1,cal2;
-    int sDay,eDay,sMonth,eMonth,sYear,eYear;
+    TextView txtUpPercentage, txtDownPercentage;
 
+    //declaration timepicker dialog
+    TextView startDate, endDate;
+    Calendar cal1, cal2;
+    int sDay, eDay, sMonth, eMonth, sYear, eYear;
+    String dateEnd, dateStart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_history );
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         databaseFXDatapoint = fbrepo.instantiate();
         timePicker();
         readData();
@@ -72,62 +77,65 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     // timepicker
-    public void timePicker(){
-        startDate = findViewById(R.id.textviewBeginDate);
-        endDate = findViewById(R.id.textviewEndDate);
-        cal1  = Calendar.getInstance();
+    public void timePicker() {
+        startDate = findViewById( R.id.textviewBeginDate );
+        endDate = findViewById( R.id.textviewEndDate );
+        cal1 = Calendar.getInstance();
         cal2 = Calendar.getInstance();
 
-        eDay = cal1.get(Calendar.DAY_OF_MONTH);
-        eMonth = cal1.get(Calendar.MONTH);
-        eYear = cal1.get(Calendar.YEAR);
+        eDay = cal1.get( Calendar.DAY_OF_MONTH );
+        eMonth = cal1.get( Calendar.MONTH );
+        eYear = cal1.get( Calendar.YEAR );
 
-        sDay = cal1.get(Calendar.DAY_OF_MONTH);
-        sMonth = cal2.get(Calendar.MONTH);
-        sYear = cal2.get(Calendar.YEAR);
+        sDay = cal1.get( Calendar.DAY_OF_MONTH );
+        sMonth = cal2.get( Calendar.MONTH );
+        sYear = cal2.get( Calendar.YEAR );
 
         eDay++;
         sMonth = sMonth + 1;
-        eMonth = eMonth +1;
-        String dateStart =  sDay+"-"+sMonth+"-"+sYear;
-        String dateEnd =  eDay+"-"+eMonth+"-"+eYear;
-        startDate.setText(dateStart);
-        endDate.setText(dateEnd);
+        eMonth = eMonth + 1;
+
+        dateStart = sDay + "-" + sMonth + "-" + sYear;
+        dateEnd = eDay + "-" + eMonth + "-" + eYear;
+        startDate.setText( dateStart );
+        endDate.setText( dateEnd );
     }
+
     //Graph Method
-    public void createGraph(){
+    public void createGraph() {
 
         //data uitlezen uit text files (graph)
         try {
-            InputStream streamMs = getAssets().open("ms.txt");
-            InputStream streamAngle = getAssets().open("angle.txt");
+            InputStream streamMs = getAssets().open( "ms.txt" );
+            InputStream streamAngle = getAssets().open( "angle.txt" );
 
-            BufferedReader readerMs= new BufferedReader(new InputStreamReader(streamMs));
-            BufferedReader readerAngle = new BufferedReader(new InputStreamReader(streamAngle));
+            BufferedReader readerMs = new BufferedReader( new InputStreamReader( streamMs ) );
+            BufferedReader readerAngle = new BufferedReader( new InputStreamReader( streamAngle ) );
 
             //lijn per lijn nakijken en in array plaatsen
-            while((numberMs = readerMs.readLine()) != null)
-                mSec.add(numberMs);
-            while((numberAngle= readerAngle.readLine()) != null)
-                angle.add(numberAngle);
+            while ((numberMs = readerMs.readLine()) != null)
+                mSec.add( numberMs );
+            while ((numberAngle = readerAngle.readLine()) != null)
+                angle.add( numberAngle );
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //graphvieuw aanmaken
-        GraphView graph =  findViewById(R.id.graph3);
+        GraphView graph = findViewById( R.id.graph3 );
 
         //data aan graph toevoegen
         series = new BarGraphSeries<>();
 
 
-        Date currentDate = null, previousDate = null, newestDate = null, usedDate = null, dtStartDate = null, dtEndDate = null;
-        SimpleDateFormat df = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+        Date currentDate = null, dtStartDate = null, dtEndDate = null;
         SimpleDateFormat filter = new SimpleDateFormat( "dd-MM-yyyy" );
-        try{
+        percentageMax.clear();
+        percentageMin.clear();
+        try {
             dtStartDate = filter.parse( startDate.getText().toString() );
             dtEndDate = filter.parse( endDate.getText().toString() );
-        }catch(ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -136,11 +144,11 @@ public class HistoryActivity extends AppCompatActivity {
             try {
                 currentDate = filter.parse( punt.getDatum() );
 
-            }catch(ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            if((currentDate.after(dtStartDate) && currentDate.before( dtEndDate )) || currentDate.equals( dtStartDate ) || currentDate.equals( dtEndDate )) {
+            if ((currentDate.after( dtStartDate ) && currentDate.before( dtEndDate )) || currentDate.equals( dtStartDate ) || currentDate.equals( dtEndDate )) {
                 double max = 0, min = 0, temp1 = 0, temp2 = -1000, temp3 = 0, temp4 = 1000;
 
                 for (Double angle : punt.getAngles()) {
@@ -157,6 +165,7 @@ public class HistoryActivity extends AppCompatActivity {
 
                 x += 1;
                 y = max;
+                percentageMax.add( max );
                 series.appendData( new DataPoint( x, y ), true, punt.getAngles().size() );
 
                 for (Double angle : punt.getAngles()) {
@@ -173,29 +182,23 @@ public class HistoryActivity extends AppCompatActivity {
 
                 x += 1;
                 y = min;
+                percentageMin.add( min );
                 series.appendData( new DataPoint( x, y ), true, punt.getAngles().size() );
 
                 x += 1;
-
             }
         }
 
-        /*
-        for (int i = 0; i<mSec.size(); i++){
-            x = Double.parseDouble(mSec.get(i));
-            y = Double.parseDouble(angle.get(i));
-            series.appendData(new DataPoint(x,y),true,mSec.size());
-        }
-        */
 
         // data toevoegen aan graph
         graph.removeAllSeries();
-        graph.addSeries(series);
+        graph.addSeries( series );
+        setPercentages();
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLUE);
-        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(40);
+        graph.getGridLabelRenderer().setHorizontalAxisTitle( "Date" );
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
+        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor(Color.BLACK);
@@ -211,35 +214,35 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
 
         // vieuwport waarde tussen 200 en - 200 y-as
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-200);
-        graph.getViewport().setMaxY(200);
+        graph.getViewport().setYAxisBoundsManual( true );
+        graph.getViewport().setMinY( -200 );
+        graph.getViewport().setMaxY( 200 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(20);
+        graph.getViewport().setXAxisBoundsManual( true );
+        graph.getViewport().setMinX( 0 );
+        graph.getViewport().setMaxX( 20 );
 
         //scaling en scrolling
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
+        graph.getViewport().setScalable( true );
+        graph.getViewport().setScalableY( true );
 
         //title grafiek
-        graph.setTitle("Progression of Stretching");
-        graph.setTitleTextSize(50);
-        graph.setTitleColor(Color.BLACK);
+        graph.setTitle( "Progression of Stretching" );
+        graph.setTitleTextSize( 50 );
+        graph.setTitleColor( Color.BLACK );
 
         //layout data
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
+        series.setDrawValuesOnTop( true );
+        series.setValuesOnTopColor( Color.RED );
 
         //kleuren bargraph
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+        series.setValueDependentColor( new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                return Color.rgb( (int) data.getX() * 255 / 4, (int) Math.abs( data.getY() * 255 / 6 ), 100 );
             }
-        });
+        } );
     }
 
     public void OnClickShowHistoryGraph(View view) {
@@ -247,26 +250,80 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void OnClickEnd(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog( HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                endDate.setText(dayOfMonth+"-"+month+"-"+year);
+                if (checkDataFields( dayOfMonth, month, year, "end" ).equals( "" )) {
+                    endDate.setText( dayOfMonth + "-" + month + "-" + year );
+                } else {
+                    endDate.setText( checkDataFields( dayOfMonth, month, year, "end" ) );
+                }
                 createGraph();
             }
-        },eYear,eMonth,eDay);
+        }, eYear, eMonth, eDay );
         datePickerDialog.show();
     }
 
     public void OnClickStart(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog( HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                startDate.setText(dayOfMonth+"-"+month+"-"+year);
+                startDate.setText( dayOfMonth + "-" + month + "-" + year );
+                if (checkDataFields( dayOfMonth, month, year, "start" ).equals( "" )) {
+                } else {
+                    endDate.setText( checkDataFields( dayOfMonth, month, year, "start" ) );
+                }
                 createGraph();
             }
 
-        },sYear,sMonth,sDay);
+        }, sYear, sMonth, sDay );
         datePickerDialog.show();
+    }
+
+
+    private String checkDataFields(int Day, int Month, int Year, String startOrEnd) {
+        Calendar clStart, clEnd;
+        clStart = Calendar.getInstance();
+        clEnd = Calendar.getInstance();
+
+        String dateEnd = "";
+        SimpleDateFormat df = new SimpleDateFormat( "dd-MM-yyyy" );
+        String strStDate, strEnDate;
+
+        if (startOrEnd.equals( "start" )) {
+            strEnDate = endDate.getText().toString();
+            try {
+                clEnd.setTime( df.parse( strEnDate ) );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            clStart.set( Year, Month, Day );
+
+            if (clEnd.after( clStart )) {
+                dateEnd = Day + "-" + Month + "-" + Year;
+                return dateEnd;
+            }
+            return "";
+
+        } else if (startOrEnd.equals( "end" )) {
+            strStDate = startDate.getText().toString();
+            try {
+                clStart.setTime( df.parse( strStDate ) );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            clEnd.set( Year, Month, Day );
+
+            if (clStart.before( clEnd )) {
+                dateEnd = Day + "-" + Month + "-" + Year;
+                return dateEnd;
+            }
+            return "";
+        }
+
+        return "";
     }
 
     public void readData() {
@@ -296,6 +353,47 @@ public class HistoryActivity extends AppCompatActivity {
                 Log.w( "database", "Failed to read data.", error.toException() );
             }
         } );
+    }
+
+    public void setPercentages() {
+        txtDownPercentage = findViewById( R.id.txtDownProcent );
+        txtUpPercentage = findViewById( R.id.txtUpProcent );
+        txtUpPercentage.setText( setMaxPercentage() + "%" );
+        txtDownPercentage.setText( setMinPercentage() + "%" );
+    }
+
+    public int setMaxPercentage() {
+        double avg = 0, total = 0, decrease = 0;
+        int percentage = 0;
+        if (percentageMax.size() > 0) {
+            for (double punt : percentageMax) {
+                total += punt;
+            }
+            avg = total / percentageMax.size();
+            decrease = avg - percentageMax.get( percentageMax.size() - 1 );
+            percentage = (int) (decrease / avg * 100);
+            percentage = -percentage;
+        } else {
+            percentage = 0;
+        }
+        return percentage;
+    }
+
+    public int setMinPercentage() {
+        double avg = 0, total = 0, decrease = 0;
+        int percentage = 0;
+        if (percentageMin.size() > 0) {
+            for (double punt : percentageMin) {
+                total += (-punt);
+            }
+            avg = total / percentageMin.size();
+            decrease = avg + percentageMin.get( percentageMin.size() - 1 );
+            percentage = (int) (decrease / avg * 100);
+            percentage = -percentage;
+        } else {
+            percentage = 0;
+        }
+        return percentage;
     }
 }
 

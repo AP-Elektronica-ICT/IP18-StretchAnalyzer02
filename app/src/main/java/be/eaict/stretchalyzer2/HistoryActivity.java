@@ -179,9 +179,9 @@ public class HistoryActivity extends AppCompatActivity {
         setPercentages();
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle( "Date" );
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
-        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitle( "Date" );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
+        //graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor(Color.BLACK);
@@ -192,18 +192,18 @@ public class HistoryActivity extends AppCompatActivity {
 
         //waarde labels laten zien of niet
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
 
-        // vieuwport waarde tussen 200 en - 200 y-as
+        // vieuwport instellen
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( -200 );
-        graph.getViewport().setMaxY( 200 );
+        graph.getViewport().setMinY( series.getLowestValueY() - 30 );
+        graph.getViewport().setMaxY( series.getHighestValueY() + 30 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
-        graph.getViewport().setMinX( 0 );
-        graph.getViewport().setMaxX( 20 );
+        graph.getViewport().setMinX( series.getLowestValueX() );
+        graph.getViewport().setMaxX( series.getHighestValueX() );
 
         //scaling en scrolling
         graph.getViewport().setScalable( true );

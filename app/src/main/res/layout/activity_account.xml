@@ -4,11 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:text="@string/account_settings"
+            android:textColor="#EEEEEE" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/textview_border">
 
         <TextView
             android:id="@+id/txtLoggedIn"
@@ -29,54 +42,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.33"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txtEMail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="InsertEmail" />
-
-        <Button
-            android:id="@+id/btnChangeMail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Change" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="91dp"
-        android:layout_gravity=""
-        android:layout_weight="0.33"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txtChangePass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="InsertHiddenPass" />
-
-        <Button
-            android:id="@+id/btnChangePass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="Change" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="379dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:background="@drawable/textview_border">
 
         <LinearLayout
-            android:layout_width="192dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -114,12 +87,15 @@
         <LinearLayout
             android:layout_width="272dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:background="@drawable/textview_border">
 
             <TextView
                 android:id="@+id/txtShFN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="start"
                 android:text="Hugh" />
 
             <TextView
@@ -138,14 +114,13 @@
                 android:id="@+id/txtShWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="95.00" />
+                android:text="95 kg" />
 
             <TextView
                 android:id="@+id/txtShHeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:text="179.00" />
+                android:text="179 cm" />
         </LinearLayout>
     </LinearLayout>
 

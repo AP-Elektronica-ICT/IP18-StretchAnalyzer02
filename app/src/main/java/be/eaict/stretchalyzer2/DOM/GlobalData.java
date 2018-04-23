@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class GlobalData {
     public static FirebaseUser currentUser;
     public static Boolean Sensor = true;
-
+    public static long startTime = 300000;
 
     public static Boolean getSensor() {
         return Sensor;

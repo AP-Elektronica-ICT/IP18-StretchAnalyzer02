@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     byte buffer[];
     int bufferPosition;
     boolean stopThread;
+
     private String data;
     private int mInterval = 100;
     private Handler mHandler;
@@ -96,6 +97,12 @@ public class HomeActivity extends AppCompatActivity {
         createGraph();
         startRepeatingTask();
         ctx = this.getApplicationContext();
+        speach();
+
+    }
+
+    //start exercising voice
+    private void speach(){
         btnStart = findViewById( R.id.btnStart );
         text = "Start exercising!";
 
@@ -143,30 +150,10 @@ public class HomeActivity extends AppCompatActivity {
 
     //Graph Method
     public void createGraph() {
-
-        //data uitlezen uit text files (graph)
-        try {
-            InputStream streamMs = getAssets().open( "ms.txt" );
-            InputStream streamAngle = getAssets().open( "angle.txt" );
-
-            BufferedReader readerMs = new BufferedReader( new InputStreamReader( streamMs ) );
-            BufferedReader readerAngle = new BufferedReader( new InputStreamReader( streamAngle ) );
-
-            //lijn per lijn nakijken en in array plaatsen
-            while ((numberMs = readerMs.readLine()) != null)
-                mSec.add( numberMs );
-            while ((numberAngle = readerAngle.readLine()) != null)
-                angle.add( numberAngle );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         //graphvieuw aanmaken
         GraphView graph = findViewById( R.id.graph );
 
-
-//data aan graph toevoegen
-
+        //data aan graph toevoegen
         series = new LineGraphSeries<DataPoint>();
 
         Date currentDate, previousDate = null, newestDate = null, usedDate = null;
@@ -221,9 +208,9 @@ public class HomeActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setVerticalAxisTitleTextSize( 40 );
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle(  "mSec"  );
+        graph.getGridLabelRenderer().setHorizontalAxisTitle(  "04/23/2018"  );
         graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
-        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
+        graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 80 );
 
         //layout grafiek
         graph.getGridLabelRenderer().setGridColor( Color.BLACK );
@@ -235,15 +222,15 @@ public class HomeActivity extends AppCompatActivity {
         //miliseconds onzichtbaar
         graph.getGridLabelRenderer().setHorizontalLabelsVisible( false );
 
-        // vieuwport waarde tussen 180 en - 180 y-as
+        // vieuwport instellen
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( -180 );
-        graph.getViewport().setMaxY( 180 );
+        graph.getViewport().setMinY( series.getLowestValueY() -30 );
+        graph.getViewport().setMaxY( series.getHighestValueY() + 30 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
-        graph.getViewport().setMinX( 0 );
-        graph.getViewport().setMaxX( Double.parseDouble( Collections.max( mSec ) ) );
+        graph.getViewport().setMinX( series.getLowestValueX() );
+        graph.getViewport().setMaxX( series.getHighestValueX() );
 
         //scaling en scrolling
         graph.getViewport().setScalable( true );

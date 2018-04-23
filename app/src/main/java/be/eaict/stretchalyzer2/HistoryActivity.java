@@ -195,15 +195,15 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
 
-        // vieuwport waarde tussen 200 en - 200 y-as
+        // vieuwport instellen
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( -200 );
-        graph.getViewport().setMaxY( 200 );
+        graph.getViewport().setMinY( series.getLowestValueY() - 30 );
+        graph.getViewport().setMaxY( series.getHighestValueY() + 30 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
-        graph.getViewport().setMinX( 0 );
-        graph.getViewport().setMaxX( 20 );
+        graph.getViewport().setMinX( series.getLowestValueX() );
+        graph.getViewport().setMaxX( series.getHighestValueX() );
 
         //scaling en scrolling
         graph.getViewport().setScalable( true );

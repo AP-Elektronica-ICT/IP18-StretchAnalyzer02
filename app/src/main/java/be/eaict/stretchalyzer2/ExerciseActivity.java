@@ -135,7 +135,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
                 @Override
                 public void run() {
-                    //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 50 miliseconden)
+                    //(12000 komt van 10 minuten * 60 seconden * 20(1 seconde om de 100 miliseconden)
                     for (int i = 0; i < 12000; i++) {
                         runOnUiThread( new Runnable() {
 
@@ -147,7 +147,7 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
                         // sleep om de livedata te vertragen tot op ingegeven waarde
                         try {
-                            Thread.sleep( 50 );
+                            Thread.sleep( 100);
                         } catch (InterruptedException e) {
                             // errors
                         }
@@ -161,8 +161,8 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
     //datapoints toevoegen aan runnable
     private void addDatapoints() {
 
-        //(12000 komt van 10 minuten * 60 seconden * 20(om de 50 miliseconden)
-        series.appendData( new DataPoint( mSec += 50, angle ), true, 12000 );
+        //(12000 komt van 10 minuten * 60 seconden * 20(om de 100 miliseconden)
+        series.appendData( new DataPoint( mSec += 100, angle ), true, 12000 );
 
         if (Double.isNaN( angle )) {
             angle = 0;

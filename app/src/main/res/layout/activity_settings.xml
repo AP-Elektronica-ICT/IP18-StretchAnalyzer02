@@ -1,21 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:background="@android:color/holo_blue_dark"
-            android:textColor="#EEEEEE"
-            android:text="@string/application_settings"/>
+            android:gravity="center"
+            android:text="@string/application_settings"
+            android:textColor="#EEEEEE" />
     </LinearLayout>
 
-<!--    <Spinner
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/set_time" />
+
+        <EditText
+            android:id="@+id/txtHours"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="time" />
+
+        <EditText
+            android:id="@+id/txtMinutes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="time" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp">
+
+        <Button
+            android:id="@+id/btnNotificationSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setNotificationTime"
+            android:text="@string/set_notification" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Color: #000000" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="ColorSelector"
+            app:srcCompat="@android:drawable/btn_star" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtDaily"
+            android:layout_width="59dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Daily Sets:" />
+
+        <ExpandableListView
+            android:id="@+id/ExpLVDailyAmount"
+            android:layout_width="17dp"
+            android:layout_height="166dp"
+            android:layout_weight="1" />
+        <!-- android:entries="refereer hier naar array met 0,1,2,3,4,5,6,7,8,9,10"-->
+
+
+
+    </LinearLayout>
+
+    <!--    <Spinner
         android:id="@+id/spinnerHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,39 +115,5 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />-->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/set_time" />
 
-    <EditText
-        android:id="@+id/txtHours"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:ems="10"
-        android:inputType="time" />
-
-    <EditText
-        android:id="@+id/txtMinutes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:ems="10"
-        android:inputType="time" />
-</LinearLayout><LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnNotificationSet"
-        android:text="@string/set_notification"
-        android:onClick="setNotificationTime"/>
-</LinearLayout>
 </LinearLayout>

@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -101,25 +102,8 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     //Graph Method
-    public void createGraph() {
 
-        //data uitlezen uit text files (graph)
-        try {
-            InputStream streamMs = getAssets().open( "ms.txt" );
-            InputStream streamAngle = getAssets().open( "angle.txt" );
-
-            BufferedReader readerMs = new BufferedReader( new InputStreamReader( streamMs ) );
-            BufferedReader readerAngle = new BufferedReader( new InputStreamReader( streamAngle ) );
-
-            //lijn per lijn nakijken en in array plaatsen
-            while ((numberMs = readerMs.readLine()) != null)
-                mSec.add( numberMs );
-            while ((numberAngle = readerAngle.readLine()) != null)
-                angle.add( numberAngle );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void createGraph(){
         //graphvieuw aanmaken
         GraphView graph = findViewById( R.id.graph3 );
 
@@ -200,15 +184,16 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 
         //layout grafiek
-        graph.getGridLabelRenderer().setGridColor( Color.BLACK );
-        graph.getGridLabelRenderer().setHighlightZeroLines( true );
-        graph.getGridLabelRenderer().setVerticalLabelsColor( Color.BLACK );
-        graph.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.HORIZONTAL );
-        graph.getViewport().setBackgroundColor( Color.WHITE );
+        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
+        graph.getGridLabelRenderer().setHighlightZeroLines(true);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+        graph.getViewport().setBackgroundColor(Color.WHITE);
 
         //waarde labels laten zien of niet
-        graph.getGridLabelRenderer().setVerticalLabelsVisible( false );
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible( true );
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
 
         // vieuwport waarde tussen 200 en - 200 y-as
         graph.getViewport().setYAxisBoundsManual( true );
@@ -242,9 +227,6 @@ public class HistoryActivity extends AppCompatActivity {
         } );
     }
 
-    public void OnClickShowHistoryGraph(View view) {
-        // firebase data ophalen
-    }
 
     public void OnClickEnd(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog( HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {

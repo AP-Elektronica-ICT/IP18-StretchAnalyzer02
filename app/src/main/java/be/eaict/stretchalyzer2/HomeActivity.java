@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,7 +221,7 @@ public class HomeActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setVerticalAxisTitleTextSize( 40 );
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle( "mSec" );
+        graph.getGridLabelRenderer().setHorizontalAxisTitle(  "mSec"  );
         graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
         graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 40 );
 

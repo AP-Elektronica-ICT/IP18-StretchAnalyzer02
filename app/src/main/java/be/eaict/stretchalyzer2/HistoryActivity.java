@@ -96,24 +96,6 @@ public class HistoryActivity extends AppCompatActivity {
     }
     //Graph Method
     public void createGraph(){
-
-        //data uitlezen uit text files (graph)
-        try {
-            InputStream streamMs = getAssets().open("ms.txt");
-            InputStream streamAngle = getAssets().open("angle.txt");
-
-            BufferedReader readerMs= new BufferedReader(new InputStreamReader(streamMs));
-            BufferedReader readerAngle = new BufferedReader(new InputStreamReader(streamAngle));
-
-            //lijn per lijn nakijken en in array plaatsen
-            while((numberMs = readerMs.readLine()) != null)
-                mSec.add(numberMs);
-            while((numberAngle= readerAngle.readLine()) != null)
-                angle.add(numberAngle);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         //graphvieuw aanmaken
         GraphView graph =  findViewById(R.id.graph3);
 
@@ -180,13 +162,6 @@ public class HistoryActivity extends AppCompatActivity {
             }
         }
 
-        /*
-        for (int i = 0; i<mSec.size(); i++){
-            x = Double.parseDouble(mSec.get(i));
-            y = Double.parseDouble(angle.get(i));
-            series.appendData(new DataPoint(x,y),true,mSec.size());
-        }
-        */
 
         // data toevoegen aan graph
         graph.removeAllSeries();
@@ -202,7 +177,6 @@ public class HistoryActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setHighlightZeroLines(true);
         graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
-        //graph.getGridLabelRenderer().setHumanRounding(false);
         graph.getViewport().setBackgroundColor(Color.WHITE);
 
         //waarde labels laten zien of niet
@@ -242,9 +216,6 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    public void OnClickShowHistoryGraph(View view) {
-        // firebase data ophalen
-    }
 
     public void OnClickEnd(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(HistoryActivity.this, new DatePickerDialog.OnDateSetListener() {

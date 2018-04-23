@@ -118,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
     //Text-to-Speech
     private void createTts(int status) {
         Locale locale = new Locale( "en", "IN" );
@@ -132,7 +131,6 @@ public class HomeActivity extends AppCompatActivity {
             Log.e( "TTS", "Initilization Failed!" );
         }
     }
-
 
     private void speak(String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -301,7 +299,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
     //Data checker
     Runnable mDataChecker = new Runnable() {
         @Override
@@ -330,7 +327,6 @@ public class HomeActivity extends AppCompatActivity {
     public void onClickSettings(View view) {
         openApplicationSettingsActivity();
     }
-
 
     //Intent method naar exercise activity
     private void openExerciseActivity() {

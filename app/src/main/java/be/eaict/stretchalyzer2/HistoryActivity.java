@@ -277,7 +277,6 @@ public class HistoryActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
     private String checkDataFields(int Day, int Month, int Year, String startOrEnd) {
         Calendar clStart, clEnd;
         clStart = Calendar.getInstance();

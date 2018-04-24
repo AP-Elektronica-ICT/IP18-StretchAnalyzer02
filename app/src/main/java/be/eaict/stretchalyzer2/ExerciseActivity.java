@@ -92,7 +92,10 @@ public class ExerciseActivity extends AppCompatActivity implements SensorEventLi
 
             @Override
             public void onFinish() {
-
+                if(GlobalData.Sensor){
+                    fbrepo.SaveToDatabase( mSec, angles );
+                }
+                finish();
             }
         }.start();
     }

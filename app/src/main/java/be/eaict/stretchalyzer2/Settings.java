@@ -10,8 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -28,6 +31,7 @@ public class Settings extends AppCompatActivity {
     private EditText hourtTemp;
     private EditText minuteTemp;
     private ToggleButton toggle;
+    private EditText counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,10 @@ public class Settings extends AppCompatActivity {
 
         toggle = findViewById( R.id.toggleButtonHardware );
         toggle.setChecked( GlobalData.Sensor );
+
+        counter = findViewById( R.id.txtCounter );
+        long time = GlobalData.startTime / 60000;
+        counter.setText( String.valueOf( time ) );
     }
 
     //setNotification button click

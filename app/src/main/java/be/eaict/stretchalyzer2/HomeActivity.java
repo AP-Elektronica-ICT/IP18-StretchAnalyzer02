@@ -81,30 +81,31 @@ public class HomeActivity extends AppCompatActivity {
     private Handler mHandler;
     private Context ctx;
     private TextToSpeech tts;
-    private boolean Bool =false;
+    private boolean Bool = false;
     private Button btnStart;
     private String text;
     private List<fxDatapoint> datapoints = new ArrayList<>();
     FBRepository fbrepo = new FBRepository();
     DatabaseReference databaseFXDatapoint;
     final List<fxDatapoint> datapointList = new ArrayList<>();
+    Date currentDate, previousDate = null, newestDate = null, usedDate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_home );
-        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         databaseFXDatapoint = fbrepo.instantiate();
         readData();
         createGraph();
         startRepeatingTask();
         ctx = this.getApplicationContext();
-        speach();
+        speech();
 
     }
 
     //start exercising voice
-    private void speach(){
+    private void speech() {
         btnStart = findViewById( R.id.btnStart );
         text = "Start exercising!";
 
@@ -158,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
         //data aan graph toevoegen
         series = new LineGraphSeries<DataPoint>();
 
-        Date currentDate, previousDate = null, newestDate = null, usedDate = null;
+
         SimpleDateFormat df = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
 
         for (fxDatapoint punt : datapointList) {
@@ -171,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (currentDate.after( previousDate )) {
                         newestDate = currentDate;
                         previousDate = currentDate;
-                    }else if(currentDate.before( previousDate )){
+                    } else if (currentDate.before( previousDate )) {
 
                     }
                 }
@@ -182,14 +183,13 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         for (fxDatapoint punt : datapointList) {
-            try{
+            try {
                 usedDate = df.parse( punt.getDatum() );
-            }
-            catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            if(usedDate.equals( newestDate )){
+            if (usedDate.equals( newestDate )) {
                 x = -50;
                 double total = punt.getTimestamp();
                 for (Double angle : punt.getAngles()) {
@@ -210,7 +210,13 @@ public class HomeActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setVerticalAxisTitleTextSize( 40 );
 
         //horizontal axsis title
-        graph.getGridLabelRenderer().setHorizontalAxisTitle(  "04/23/2018"  );
+        if (newestDate == null) {
+            graph.getGridLabelRenderer().setHorizontalAxisTitle( "" );
+        } else {
+            DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yy hh:mm:ss" );
+            String strDate = dateFormat.format( newestDate );
+            graph.getGridLabelRenderer().setHorizontalAxisTitle( strDate );
+        }
         graph.getGridLabelRenderer().setHorizontalAxisTitleColor( Color.BLUE );
         graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize( 80 );
 
@@ -226,7 +232,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // vieuwport instellen
         graph.getViewport().setYAxisBoundsManual( true );
-        graph.getViewport().setMinY( series.getLowestValueY() -30 );
+        graph.getViewport().setMinY( series.getLowestValueY() - 30 );
         graph.getViewport().setMaxY( series.getHighestValueY() + 30 );
 
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
@@ -352,19 +358,20 @@ public class HomeActivity extends AppCompatActivity {
         ImageView img, img2;
         img = findViewById( R.id.imageView );
         img2 = findViewById( R.id.imageView2 );
-        if (Bool==false){
-        img.setImageResource( R.drawable.pic1 );
-        img2.setImageResource( R.drawable.pic2 );
-        Bool = true;}
-        else{
+        if (Bool == false) {
+            img.setImageResource( R.drawable.pic1 );
+            img2.setImageResource( R.drawable.pic2 );
+            Bool = true;
+        } else {
             img.setImageResource( R.drawable.pic2 );
             img2.setImageResource( R.drawable.pic1 );
-            Bool = false;}
+            Bool = false;
+        }
 
     }
 
     public void onClickSelectedExercise(View view) {
-        Toast.makeText(HomeActivity.this,"Dit is de geselecteerde oefening ", Toast.LENGTH_LONG).show();
+        Toast.makeText( HomeActivity.this, "Dit is de geselecteerde oefening ", Toast.LENGTH_LONG ).show();
 
     }
 

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -338,6 +339,26 @@ public class HistoryActivity extends AppCompatActivity {
         txtUpPercentage = findViewById( R.id.txtUpProcent );
         txtUpPercentage.setText( setMaxPercentage() + "%" );
         txtDownPercentage.setText( setMinPercentage() + "%" );
+        ImageView img1,img2;
+        img1 = findViewById(R.id.pijl1);
+        img2 = findViewById(R.id.pijl2);
+        if (setMaxPercentage() < 0){
+            img1.setImageResource( R.drawable.p2 );
+            txtUpPercentage.setTextColor(Color.rgb(200,0,0));
+
+        } else {
+            img1.setImageResource(R.drawable.p1);
+            txtUpPercentage.setTextColor(Color.rgb(0,128,0));
+        }
+        if (setMinPercentage() < 0){
+            img2.setImageResource( R.drawable.p2 );
+            txtDownPercentage.setTextColor(Color.rgb(200,0,0));
+
+        } else {
+            img2.setImageResource(R.drawable.p1);
+            txtDownPercentage.setTextColor(Color.rgb(0,128,0));
+        }
+
     }
 
     public int setMaxPercentage() {

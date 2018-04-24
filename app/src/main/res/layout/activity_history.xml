@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textviewUP"
             android:text="UP:"
-            android:textColor="#7fff00"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:layout_weight="1"
             android:gravity="center"
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:background="@drawable/p1"
+            android:id="@+id/pijl1"
             android:scaleType="fitEnd" />
 
         <TextView
@@ -134,7 +134,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Down:"
-            android:textColor="#ff0000"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="15dp"
             android:textStyle="bold" />
 
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:background="@drawable/p2"
+            android:id="@+id/pijl2"
             android:scaleType="fitCenter" />
 
         <TextView

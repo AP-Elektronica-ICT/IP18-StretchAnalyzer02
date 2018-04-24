@@ -62,7 +62,7 @@
             android:hint="@string/enddate"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#ff0000"
             android:textSize="15sp"
             android:onClick="OnClickEnd"/>
     </LinearLayout>

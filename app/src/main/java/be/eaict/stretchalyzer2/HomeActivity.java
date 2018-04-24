@@ -1,9 +1,12 @@
 package be.eaict.stretchalyzer2;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -101,7 +104,6 @@ public class HomeActivity extends AppCompatActivity {
         startRepeatingTask();
         ctx = this.getApplicationContext();
         speech();
-
     }
 
     //start exercising voice
@@ -238,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
         // vieuwport waarde tussen 0 en maxvalue array (ms) x-as
         graph.getViewport().setXAxisBoundsManual( true );
         graph.getViewport().setMinX( series.getLowestValueX() );
-        graph.getViewport().setMaxX( series.getHighestValueX() );
+        graph.getViewport().setMaxX( series.getHighestValueX() / 2 );
 
         //scaling en scrolling
         graph.getViewport().setScalable( true );
@@ -332,6 +334,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //Intent method naar settings activity
     private void openApplicationSettingsActivity() {
+
         Intent intent = new Intent( HomeActivity.this, Settings.class );
         startActivity( intent );
     }

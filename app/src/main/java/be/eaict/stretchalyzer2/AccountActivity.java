@@ -28,7 +28,7 @@ public class AccountActivity extends AppCompatActivity {
     public void onClicklLogOut(View view) {
         Intent intent = new Intent( AccountActivity.this, MainActivity.class );
         startActivity( intent );
-        GlobalData.currentUser = null;
         finish();
+        GlobalData.currentUser = null;
     }
 }

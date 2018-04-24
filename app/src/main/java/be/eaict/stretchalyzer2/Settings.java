@@ -76,7 +76,6 @@ public class Settings extends AppCompatActivity {
         Toast.makeText(Settings.this,tekst, Toast.LENGTH_LONG).show();
     }
 
-
     public void onToggleClicked(View view) {
         if (toggle.isChecked()) {
             GlobalData.Sensor = true;
